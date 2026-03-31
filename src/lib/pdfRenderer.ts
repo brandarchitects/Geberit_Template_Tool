@@ -12,34 +12,34 @@ function loadFontBase64(filename: string): string {
 }
 
 function buildFontFace(): string {
-  const boldWoff2 = loadFontBase64('AktivGrotesk-Bold.woff2');
-  const boldTtf = loadFontBase64('AktivGrotesk-Bold.ttf');
-  const regularWoff2 = loadFontBase64('AktivGrotesk-Regular.woff2');
-  const regularTtf = loadFontBase64('AktivGrotesk-Regular.ttf');
-  const lightWoff2 = loadFontBase64('AktivGrotesk-Light.woff2');
-  const lightTtf = loadFontBase64('AktivGrotesk-Light.ttf');
+  const boldWoff2    = loadFontBase64(C.fonts.bold.woff2);
+  const boldTtf      = loadFontBase64(C.fonts.bold.ttf);
+  const regularWoff2 = loadFontBase64(C.fonts.regular.woff2);
+  const regularTtf   = loadFontBase64(C.fonts.regular.ttf);
+  const lightWoff2   = loadFontBase64(C.fonts.light.woff2);
+  const lightTtf     = loadFontBase64(C.fonts.light.ttf);
+  const mediumWoff2  = loadFontBase64(C.fonts.medium.woff2);
+  const mediumTtf    = loadFontBase64(C.fonts.medium.ttf);
 
-  const face = (name: string, weight: number, woff2B64: string, ttfB64: string) => {
+  const face = (weight: number, woff2B64: string, ttfB64: string, style = 'normal') => {
     const sources: string[] = [];
     if (woff2B64) sources.push(`url('data:font/woff2;base64,${woff2B64}') format('woff2')`);
-    if (ttfB64) sources.push(`url('data:font/truetype;base64,${ttfB64}') format('truetype')`);
+    if (ttfB64)   sources.push(`url('data:font/truetype;base64,${ttfB64}') format('truetype')`);
     if (sources.length === 0) return '';
     return `
 @font-face {
-  font-family: '${name}';
+  font-family: 'AktivGroteskGeberit';
   font-weight: ${weight};
-  font-style: normal;
+  font-style: ${style};
   src: ${sources.join(', ')};
 }`;
   };
 
   return [
-    face('AktivGrotesk-Bold', 700, boldWoff2, boldTtf),
-    face('AktivGrotesk', 700, boldWoff2, boldTtf),
-    face('AktivGrotesk-Regular', 400, regularWoff2, regularTtf),
-    face('AktivGrotesk', 400, regularWoff2, regularTtf),
-    face('AktivGrotesk-Light', 300, lightWoff2, lightTtf),
-    face('AktivGrotesk', 300, lightWoff2, lightTtf),
+    face(700, boldWoff2,    boldTtf),
+    face(400, regularWoff2, regularTtf),
+    face(300, lightWoff2,   lightTtf),
+    face(500, mediumWoff2,  mediumTtf),
   ].join('\n');
 }
 
@@ -98,12 +98,12 @@ function sectionHtml(
   const titleColor = blueTitle ? C.geberitBlue : C.textBlack;
   const titleHtml = `
     <div class="section-title-row" style="display:flex;align-items:center;margin-bottom:${C.separatorMarginTop};">
-      <span style="font-family:'AktivGrotesk-Bold','AktivGrotesk',Arial,sans-serif;font-weight:${C.sectionTitleWeight};font-size:${C.sectionTitleSize};color:${titleColor};text-transform:uppercase;letter-spacing:0.04em;flex-shrink:0;margin-right:2mm;">${escapeHtml(title)}</span>
+      <span style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:${C.sectionTitleWeight};font-size:${C.sectionTitleSize};color:${titleColor};text-transform:uppercase;letter-spacing:0.04em;flex-shrink:0;margin-right:2mm;">${escapeHtml(title)}</span>
       ${blueTitle ? `<div style="flex:1;height:${C.separatorThickness};background-color:${C.separatorColor};margin-top:0.5mm;"></div>` : ''}
     </div>`;
 
   const bodyHtml = text
-    ? `<div style="font-family:'AktivGrotesk',Arial,sans-serif;font-weight:${C.bodyWeight};font-size:${C.bodySize};color:${C.textBlack};line-height:${C.lineHeight};white-space:pre-line;">${escapeHtml(text)}</div>`
+    ? `<div style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:${C.bodyWeight};font-size:${C.bodySize};color:${C.textBlack};line-height:${C.bodyLineHeight};white-space:pre-line;">${escapeHtml(text)}</div>`
     : '';
 
   const listHtml =
@@ -111,7 +111,7 @@ function sectionHtml(
       ? `<ul style="margin:0;padding-left:3.5mm;list-style-type:disc;">${items
           .map(
             (item) =>
-              `<li style="font-family:'AktivGrotesk',Arial,sans-serif;font-weight:${C.bulletWeight};font-size:${C.bulletSize};color:${C.textBlack};line-height:${C.lineHeight};margin-bottom:0.5mm;padding-left:0.5mm;">${escapeHtml(item)}</li>`
+              `<li style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:${C.bulletWeight};font-size:${C.bulletSize};color:${C.textBlack};line-height:${C.bulletLineHeight};margin-bottom:0.3mm;padding-left:0.5mm;">${escapeHtml(item)}</li>`
           )
           .join('')}</ul>`
       : '';
@@ -139,8 +139,8 @@ export function buildPdfHtml(data: GeberitAd01Data): string {
   const leftColumn = [
     // Job intro
     `<div style="margin-bottom:5mm;">
-       <div style="font-family:'AktivGrotesk-Light','AktivGrotesk',Arial,sans-serif;font-weight:${C.lookingForWeight};font-size:${C.lookingForSize};color:${C.textBlack};line-height:1.3;margin-bottom:1mm;">${escapeHtml(data.lookingForLabel)}</div>
-       <div style="font-family:'AktivGrotesk-Bold','AktivGrotesk',Arial,sans-serif;font-weight:${C.jobTitleWeight};font-size:${C.jobTitleSize};color:${C.textBlack};line-height:1.2;">${escapeHtml(data.jobTitle)}</div>
+       <div style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:${C.lookingForWeight};font-size:${C.lookingForSize};color:${C.textBlack};line-height:1.3;margin-bottom:1mm;">${escapeHtml(data.lookingForLabel)}</div>
+       <div style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:${C.jobTitleWeight};font-size:${C.jobTitleSize};color:${C.textBlack};line-height:1.2;">${escapeHtml(data.jobTitle)}</div>
      </div>`,
     sectionHtml(data.aboutTitle, data.aboutText, undefined, true),
     sectionHtml(data.responsibilitiesTitle, undefined, data.responsibilitiesItems, true),
@@ -165,7 +165,7 @@ export function buildPdfHtml(data: GeberitAd01Data): string {
     overflow: hidden;
   }
   body {
-    font-family: 'AktivGrotesk', Arial, sans-serif;
+    font-family: 'AktivGroteskGeberit', Arial, sans-serif;
     background: #ffffff;
   }
   @page {
@@ -189,9 +189,9 @@ export function buildPdfHtml(data: GeberitAd01Data): string {
 
     <!-- Taglines -->
     <div style="position:absolute;bottom:${C.taglineBottom};left:${C.taglineLeft};">
-      <div style="font-family:'AktivGrotesk-Light','AktivGrotesk',Arial,sans-serif;font-weight:300;font-size:${C.taglineFontSize};color:#ffffff;line-height:${C.taglineLineHeight};text-transform:uppercase;">${escapeHtml(data.tagline1)}</div>
-      <div style="font-family:'AktivGrotesk-Light','AktivGrotesk',Arial,sans-serif;font-weight:300;font-size:${C.taglineFontSize};color:#ffffff;line-height:${C.taglineLineHeight};text-transform:uppercase;">${escapeHtml(data.tagline2)}</div>
-      <div style="font-family:'AktivGrotesk-Bold','AktivGrotesk',Arial,sans-serif;font-weight:700;font-size:${C.taglineFontSize};color:${C.perfectFitBlue};line-height:${C.taglineLineHeight};text-transform:uppercase;">${escapeHtml(data.tagline3)}</div>
+      <div style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:300;font-size:${C.taglineFontSize};color:#ffffff;line-height:${C.taglineLineHeight};text-transform:uppercase;">${escapeHtml(data.tagline1)}</div>
+      <div style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:300;font-size:${C.taglineFontSize};color:#ffffff;line-height:${C.taglineLineHeight};text-transform:uppercase;">${escapeHtml(data.tagline2)}</div>
+      <div style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:700;font-size:${C.taglineFontSize};color:${C.perfectFitBlue};line-height:${C.taglineLineHeight};text-transform:uppercase;">${escapeHtml(data.tagline3)}</div>
     </div>
   </div>
 

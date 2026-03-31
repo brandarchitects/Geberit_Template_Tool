@@ -25,12 +25,11 @@ export const C = {
   logoWidth: '38mm',
 
   // ─── Taglines (bottom-left of hero) ──────────────────────────────────────
-  // Spec: left 15 mm from page edge
-  // Font sizes: 40pt  (white Light for line 1–2, blue Bold for line 3)
+  // Spec: left 15 mm · font 40 pt · leading 45 pt
   taglineLeft: '15mm',
   taglineBottom: '10mm',
   taglineFontSize: '40pt',
-  taglineLineHeight: 1.05,
+  taglineLineHeight: '45pt',     // exact spec: 45 pt leading
 
   // ─── Content section (below hero) ────────────────────────────────────────
   // Spec: 30 mm left margin, 30 mm right margin, 10 mm column gap
@@ -41,28 +40,30 @@ export const C = {
   columnGap: '10mm',
 
   // ─── Typography ──────────────────────────────────────────────────────────
-  // Spec: "We are looking for" — Aktiv Grotesk Light, 11pt
+  // Single font-family name — weights select the correct file via @font-face
+  fontFamily: "'AktivGroteskGeberit', Arial, sans-serif",
+
+  // Spec: "We are looking for" — Light, 11pt
   lookingForSize: '11pt',
   lookingForWeight: 300,
 
-  // Job title ("Electrical Engineer FH") — Bold, visually ~14pt
+  // Job title ("Electrical Engineer FH") — Bold, ~13 pt
   jobTitleSize: '13pt',
   jobTitleWeight: 700,
 
-  // Section titles ("ABOUT GEBERIT" etc.) — Bold, uppercase, blue
-  // Not explicitly in spec → estimated at 8pt bold (proportional to body)
+  // Section titles ("ABOUT GEBERIT" etc.) — Bold, uppercase, blue/black
   sectionTitleSize: '8pt',
   sectionTitleWeight: 700,
 
-  // Spec: Body copy — Aktiv Grotesk Geberit, 8.5pt
+  // Spec: Body copy — Regular, 8.5 pt, leading 11 pt
   bodySize: '8.5pt',
   bodyWeight: 400,
+  bodyLineHeight: '11pt',        // exact spec: 11 pt leading
 
-  // Bullet points — same as body copy
+  // Bullet points — same as body
   bulletSize: '8.5pt',
   bulletWeight: 400,
-
-  lineHeight: 1.35,
+  bulletLineHeight: '11pt',      // exact spec: 11 pt leading
 
   // ─── Separator line (below section titles) ────────────────────────────────
   separatorColor: '#004673',
@@ -87,4 +88,12 @@ export const C = {
   ] as string[],
 
   defaultBackgroundId: 'Geberit_Ad_01',
+
+  // ─── Font file names (used by pdfRenderer for base64 embedding) ───────────
+  fonts: {
+    bold:    { woff2: 'AktivGroteskGeberit_W_Bd.woff2',   ttf: 'AktivGroteskGeberit_Bd.ttf'   },
+    regular: { woff2: 'AktivGroteskGeberit_W_Rg.woff2',   ttf: 'AktivGroteskGeberit_Rg.ttf'   },
+    light:   { woff2: 'AktivGroteskGeberit_W_Lt.woff2',   ttf: 'AktivGroteskGeberit_Lt.ttf'   },
+    medium:  { woff2: 'AktivGroteskGeberit_W_Md.woff2',   ttf: 'AktivGroteskGeberit_Md.ttf'   },
+  },
 };

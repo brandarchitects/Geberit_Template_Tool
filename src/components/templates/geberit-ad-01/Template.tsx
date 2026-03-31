@@ -46,7 +46,7 @@ function Section({ title, text, items, blueTitle = true }: SectionProps) {
       >
         <span
           style={{
-            fontFamily: "'AktivGrotesk-Bold', 'AktivGrotesk', Arial, sans-serif",
+            fontFamily: C.fontFamily,
             fontWeight: C.sectionTitleWeight,
             fontSize: C.sectionTitleSize,
             color: blueTitle ? C.geberitBlue : C.textBlack,
@@ -74,11 +74,11 @@ function Section({ title, text, items, blueTitle = true }: SectionProps) {
       {text && (
         <div
           style={{
-            fontFamily: "'AktivGrotesk', Arial, sans-serif",
-            fontWeight: 400,
+            fontFamily: C.fontFamily,
+            fontWeight: C.bodyWeight,
             fontSize: C.bodySize,
             color: C.textBlack,
-            lineHeight: C.lineHeight,
+            lineHeight: C.bodyLineHeight,
             whiteSpace: 'pre-line',
           }}
         >
@@ -88,23 +88,17 @@ function Section({ title, text, items, blueTitle = true }: SectionProps) {
 
       {/* Bullet list */}
       {items && items.length > 0 && (
-        <ul
-          style={{
-            margin: 0,
-            paddingLeft: '3.5mm',
-            listStyleType: 'disc',
-          }}
-        >
+        <ul style={{ margin: 0, paddingLeft: '3.5mm', listStyleType: 'disc' }}>
           {items.map((item, i) => (
             <li
               key={i}
               style={{
-                fontFamily: "'AktivGrotesk', Arial, sans-serif",
-                fontWeight: 400,
+                fontFamily: C.fontFamily,
+                fontWeight: C.bulletWeight,
                 fontSize: C.bulletSize,
                 color: C.textBlack,
-                lineHeight: C.lineHeight,
-                marginBottom: '0.5mm',
+                lineHeight: C.bulletLineHeight,
+                marginBottom: '0.3mm',
                 paddingLeft: '0.5mm',
               }}
             >
@@ -132,7 +126,7 @@ export default function GeberitAd01Template({ data, previewMode = true, baseUrl 
         position: 'relative',
         backgroundColor: '#ffffff',
         overflow: 'hidden',
-        fontFamily: "'AktivGrotesk', Arial, sans-serif",
+        fontFamily: C.fontFamily,
       }}
     >
       {/* ── Hero section ─────────────────────────────────────────────────── */}
@@ -191,9 +185,10 @@ export default function GeberitAd01Template({ data, previewMode = true, baseUrl 
             left: C.taglineLeft,
           }}
         >
+          {/* Line 1 — white, Light */}
           <div
             style={{
-              fontFamily: "'AktivGrotesk-Light', 'AktivGrotesk', Arial, sans-serif",
+              fontFamily: C.fontFamily,
               fontWeight: 300,
               fontSize: C.taglineFontSize,
               color: C.white,
@@ -203,9 +198,10 @@ export default function GeberitAd01Template({ data, previewMode = true, baseUrl 
           >
             {data.tagline1}
           </div>
+          {/* Line 2 — white, Light */}
           <div
             style={{
-              fontFamily: "'AktivGrotesk-Light', 'AktivGrotesk', Arial, sans-serif",
+              fontFamily: C.fontFamily,
               fontWeight: 300,
               fontSize: C.taglineFontSize,
               color: C.white,
@@ -215,9 +211,10 @@ export default function GeberitAd01Template({ data, previewMode = true, baseUrl 
           >
             {data.tagline2}
           </div>
+          {/* Line 3 — #B4CDF0, Bold */}
           <div
             style={{
-              fontFamily: "'AktivGrotesk-Bold', 'AktivGrotesk', Arial, sans-serif",
+              fontFamily: C.fontFamily,
               fontWeight: 700,
               fontSize: C.taglineFontSize,
               color: C.perfectFitBlue,
@@ -253,7 +250,7 @@ export default function GeberitAd01Template({ data, previewMode = true, baseUrl 
           <div style={{ marginBottom: '5mm' }}>
             <div
               style={{
-                fontFamily: "'AktivGrotesk-Light', 'AktivGrotesk', Arial, sans-serif",
+                fontFamily: C.fontFamily,
                 fontWeight: C.lookingForWeight,
                 fontSize: C.lookingForSize,
                 color: C.textBlack,
@@ -265,7 +262,7 @@ export default function GeberitAd01Template({ data, previewMode = true, baseUrl 
             </div>
             <div
               style={{
-                fontFamily: "'AktivGrotesk-Bold', 'AktivGrotesk', Arial, sans-serif",
+                fontFamily: C.fontFamily,
                 fontWeight: C.jobTitleWeight,
                 fontSize: C.jobTitleSize,
                 color: C.textBlack,
@@ -283,16 +280,8 @@ export default function GeberitAd01Template({ data, previewMode = true, baseUrl 
         {/* ── Right column ─────────────────────────────────────────────── */}
         <div style={{ flex: 1, overflow: 'hidden' }}>
           <Section title={data.profileTitle} items={data.profileItems} />
-          <Section
-            title={data.applicationTitle}
-            text={data.applicationText}
-            blueTitle={false}
-          />
-          <Section
-            title={data.contactTitle}
-            text={data.contactText}
-            blueTitle={false}
-          />
+          <Section title={data.applicationTitle} text={data.applicationText} blueTitle={false} />
+          <Section title={data.contactTitle} text={data.contactText} blueTitle={false} />
         </div>
       </div>
     </div>
