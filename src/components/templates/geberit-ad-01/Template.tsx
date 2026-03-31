@@ -16,7 +16,7 @@ function resolveBackgroundSrc(data: GeberitAd01Data, baseUrl = ''): string {
   if (data.customBackgroundBase64) {
     return `data:${data.customBackgroundMimeType ?? 'image/jpeg'};base64,${data.customBackgroundBase64}`;
   }
-  return `${baseUrl}/images/backgrounds/${data.backgroundImageId}.jpg`;
+  return `${baseUrl}/images/${data.backgroundImageId}.jpg`;
 }
 
 function resolveLogoSrc(baseUrl = ''): string {

@@ -56,7 +56,6 @@ function resolveBackgroundBase64(data: GeberitAd01Data): { base64: string; mime:
     process.cwd(),
     'public',
     'images',
-    'backgrounds',
     `${data.backgroundImageId}.jpg`
   );
   if (fs.existsSync(imgPath)) {

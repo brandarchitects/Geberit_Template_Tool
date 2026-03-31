@@ -56,7 +56,7 @@ export default function ImagePicker({
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`/images/backgrounds/${id}.jpg`}
+              src={`/images/${id}.jpg`}
               alt={id}
               className="w-full h-full object-cover"
               onError={(e) => {
