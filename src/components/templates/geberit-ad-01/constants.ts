@@ -1,12 +1,11 @@
 /**
  * Geberit Ad 01 — Layout Constants
  *
- * All measurements in mm unless noted otherwise.
- * Adjust these values to match the exact print design once
- * the annotated specification files are delivered.
+ * All measurements in mm / pt as per the official Geberit design specification.
  *
  * Page: A4  210 × 297 mm
- * Background image source: 2000 × 1334 px  (ratio 1.499 → height = 210/1.499 = 140.09 mm)
+ * Background image: 2000 × 1334 px  (ratio 1.499 → height = 210/1.499 ≈ 140 mm)
+ * Logo source: Logo_Geberit_white_transparent.png  520 × 79 px
  */
 
 export const C = {
@@ -15,21 +14,26 @@ export const C = {
   pageHeight: '297mm',
 
   // ─── Hero image ──────────────────────────────────────────────────────────
+  // 210mm × (1334/2000) = 140.07 mm
   heroHeight: '140mm',
 
   // ─── Geberit Logo ─────────────────────────────────────────────────────────
-  // Original: 520 × 79 px  → width 38mm → height 38 × 79/520 = 5.77mm
+  // Spec: 10 mm from top, 5.5 mm from right
+  // Width: 520 px original → rendered at ~38 mm (height auto: 38 × 79/520 ≈ 5.77 mm)
   logoTop: '10mm',
   logoRight: '5.5mm',
   logoWidth: '38mm',
 
   // ─── Taglines (bottom-left of hero) ──────────────────────────────────────
+  // Spec: left 15 mm from page edge
+  // Font sizes: 40pt  (white Light for line 1–2, blue Bold for line 3)
   taglineLeft: '15mm',
-  taglineBottom: '12mm',
-  taglineFontSize: '42pt',      // ~14.8mm per line — adjust to spec
+  taglineBottom: '10mm',
+  taglineFontSize: '40pt',
   taglineLineHeight: 1.05,
 
-  // ─── Content section ─────────────────────────────────────────────────────
+  // ─── Content section (below hero) ────────────────────────────────────────
+  // Spec: 30 mm left margin, 30 mm right margin, 10 mm column gap
   contentPaddingTop: '10mm',
   contentPaddingBottom: '10mm',
   contentPaddingLeft: '30mm',
@@ -37,22 +41,38 @@ export const C = {
   columnGap: '10mm',
 
   // ─── Typography ──────────────────────────────────────────────────────────
-  lookingForSize: '8pt',
-  jobTitleSize: '12pt',
-  sectionTitleSize: '7.5pt',
+  // Spec: "We are looking for" — Aktiv Grotesk Light, 11pt
+  lookingForSize: '11pt',
+  lookingForWeight: 300,
+
+  // Job title ("Electrical Engineer FH") — Bold, visually ~14pt
+  jobTitleSize: '13pt',
+  jobTitleWeight: 700,
+
+  // Section titles ("ABOUT GEBERIT" etc.) — Bold, uppercase, blue
+  // Not explicitly in spec → estimated at 8pt bold (proportional to body)
+  sectionTitleSize: '8pt',
+  sectionTitleWeight: 700,
+
+  // Spec: Body copy — Aktiv Grotesk Geberit, 8.5pt
   bodySize: '8.5pt',
+  bodyWeight: 400,
+
+  // Bullet points — same as body copy
   bulletSize: '8.5pt',
+  bulletWeight: 400,
+
   lineHeight: 1.35,
 
-  // ─── Separator line ───────────────────────────────────────────────────────
+  // ─── Separator line (below section titles) ────────────────────────────────
   separatorColor: '#004673',
-  separatorThickness: '0.3pt',
-  separatorMarginBottom: '2mm',
-  separatorMarginTop: '1mm',
+  separatorThickness: '0.4pt',
+  separatorMarginTop: '0.8mm',
+  separatorMarginBottom: '1.5mm',
 
   // ─── Colors ───────────────────────────────────────────────────────────────
   geberitBlue: '#004673',
-  perfectFitBlue: '#B4CDF0',
+  perfectFitBlue: '#B4CDF0',  // "THE PERFECT FIT" tagline color
   textBlack: '#000000',
   white: '#ffffff',
 

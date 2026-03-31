@@ -47,11 +47,11 @@ function Section({ title, text, items, blueTitle = true }: SectionProps) {
         <span
           style={{
             fontFamily: "'AktivGrotesk-Bold', 'AktivGrotesk', Arial, sans-serif",
-            fontWeight: 700,
+            fontWeight: C.sectionTitleWeight,
             fontSize: C.sectionTitleSize,
             color: blueTitle ? C.geberitBlue : C.textBlack,
             textTransform: 'uppercase',
-            letterSpacing: '0.03em',
+            letterSpacing: '0.04em',
             flexShrink: 0,
             marginRight: '2mm',
           }}
@@ -253,8 +253,8 @@ export default function GeberitAd01Template({ data, previewMode = true, baseUrl 
           <div style={{ marginBottom: '5mm' }}>
             <div
               style={{
-                fontFamily: "'AktivGrotesk', Arial, sans-serif",
-                fontWeight: 400,
+                fontFamily: "'AktivGrotesk-Light', 'AktivGrotesk', Arial, sans-serif",
+                fontWeight: C.lookingForWeight,
                 fontSize: C.lookingForSize,
                 color: C.textBlack,
                 lineHeight: 1.3,
@@ -266,7 +266,7 @@ export default function GeberitAd01Template({ data, previewMode = true, baseUrl 
             <div
               style={{
                 fontFamily: "'AktivGrotesk-Bold', 'AktivGrotesk', Arial, sans-serif",
-                fontWeight: 700,
+                fontWeight: C.jobTitleWeight,
                 fontSize: C.jobTitleSize,
                 color: C.textBlack,
                 lineHeight: 1.2,

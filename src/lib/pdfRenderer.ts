@@ -99,12 +99,12 @@ function sectionHtml(
   const titleColor = blueTitle ? C.geberitBlue : C.textBlack;
   const titleHtml = `
     <div class="section-title-row" style="display:flex;align-items:center;margin-bottom:${C.separatorMarginTop};">
-      <span style="font-family:'AktivGrotesk-Bold','AktivGrotesk',Arial,sans-serif;font-weight:700;font-size:${C.sectionTitleSize};color:${titleColor};text-transform:uppercase;letter-spacing:0.03em;flex-shrink:0;margin-right:2mm;">${escapeHtml(title)}</span>
+      <span style="font-family:'AktivGrotesk-Bold','AktivGrotesk',Arial,sans-serif;font-weight:${C.sectionTitleWeight};font-size:${C.sectionTitleSize};color:${titleColor};text-transform:uppercase;letter-spacing:0.04em;flex-shrink:0;margin-right:2mm;">${escapeHtml(title)}</span>
       ${blueTitle ? `<div style="flex:1;height:${C.separatorThickness};background-color:${C.separatorColor};margin-top:0.5mm;"></div>` : ''}
     </div>`;
 
   const bodyHtml = text
-    ? `<div style="font-family:'AktivGrotesk',Arial,sans-serif;font-weight:400;font-size:${C.bodySize};color:${C.textBlack};line-height:${C.lineHeight};white-space:pre-line;">${escapeHtml(text)}</div>`
+    ? `<div style="font-family:'AktivGrotesk',Arial,sans-serif;font-weight:${C.bodyWeight};font-size:${C.bodySize};color:${C.textBlack};line-height:${C.lineHeight};white-space:pre-line;">${escapeHtml(text)}</div>`
     : '';
 
   const listHtml =
@@ -112,7 +112,7 @@ function sectionHtml(
       ? `<ul style="margin:0;padding-left:3.5mm;list-style-type:disc;">${items
           .map(
             (item) =>
-              `<li style="font-family:'AktivGrotesk',Arial,sans-serif;font-weight:400;font-size:${C.bulletSize};color:${C.textBlack};line-height:${C.lineHeight};margin-bottom:0.5mm;padding-left:0.5mm;">${escapeHtml(item)}</li>`
+              `<li style="font-family:'AktivGrotesk',Arial,sans-serif;font-weight:${C.bulletWeight};font-size:${C.bulletSize};color:${C.textBlack};line-height:${C.lineHeight};margin-bottom:0.5mm;padding-left:0.5mm;">${escapeHtml(item)}</li>`
           )
           .join('')}</ul>`
       : '';
@@ -140,8 +140,8 @@ export function buildPdfHtml(data: GeberitAd01Data): string {
   const leftColumn = [
     // Job intro
     `<div style="margin-bottom:5mm;">
-       <div style="font-family:'AktivGrotesk',Arial,sans-serif;font-weight:400;font-size:${C.lookingForSize};color:${C.textBlack};line-height:1.3;margin-bottom:1mm;">${escapeHtml(data.lookingForLabel)}</div>
-       <div style="font-family:'AktivGrotesk-Bold','AktivGrotesk',Arial,sans-serif;font-weight:700;font-size:${C.jobTitleSize};color:${C.textBlack};line-height:1.2;">${escapeHtml(data.jobTitle)}</div>
+       <div style="font-family:'AktivGrotesk-Light','AktivGrotesk',Arial,sans-serif;font-weight:${C.lookingForWeight};font-size:${C.lookingForSize};color:${C.textBlack};line-height:1.3;margin-bottom:1mm;">${escapeHtml(data.lookingForLabel)}</div>
+       <div style="font-family:'AktivGrotesk-Bold','AktivGrotesk',Arial,sans-serif;font-weight:${C.jobTitleWeight};font-size:${C.jobTitleSize};color:${C.textBlack};line-height:1.2;">${escapeHtml(data.jobTitle)}</div>
      </div>`,
     sectionHtml(data.aboutTitle, data.aboutText, undefined, true),
     sectionHtml(data.responsibilitiesTitle, undefined, data.responsibilitiesItems, true),
