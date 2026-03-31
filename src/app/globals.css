@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Aktiv Grotesk Geberit — all weights
+   File naming: _W_ = woff2 (browser), no _W_ = ttf (fallback + PDF embed)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Bold (700) ────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'AktivGroteskGeberit';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('/fonts/AktivGroteskGeberit_W_Bd.woff2') format('woff2'),
+    url('/fonts/AktivGroteskGeberit_Bd.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'AktivGroteskGeberit';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src:
+    url('/fonts/AktivGroteskGeberit_W_BdIt.woff2') format('woff2'),
+    url('/fonts/AktivGroteskGeberit_BdIt.ttf') format('truetype');
+}
+
+/* ── Regular (400) ─────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'AktivGroteskGeberit';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('/fonts/AktivGroteskGeberit_W_Rg.woff2') format('woff2'),
+    url('/fonts/AktivGroteskGeberit_Rg.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'AktivGroteskGeberit';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src:
+    url('/fonts/AktivGroteskGeberit_W_It.woff2') format('woff2'),
+    url('/fonts/AktivGroteskGeberit_It.ttf') format('truetype');
+}
+
+/* ── Medium (500) ──────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'AktivGroteskGeberit';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('/fonts/AktivGroteskGeberit_W_Md.woff2') format('woff2'),
+    url('/fonts/AktivGroteskGeberit_Md.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'AktivGroteskGeberit';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src:
+    url('/fonts/AktivGroteskGeberit_W_MdIt.woff2') format('woff2'),
+    url('/fonts/AktivGroteskGeberit_MdIt.ttf') format('truetype');
+}
+
+/* ── Light (300) ───────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'AktivGroteskGeberit';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('/fonts/AktivGroteskGeberit_W_Lt.woff2') format('woff2'),
+    url('/fonts/AktivGroteskGeberit_Lt.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'AktivGroteskGeberit';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src:
+    url('/fonts/AktivGroteskGeberit_W_LtIt.woff2') format('woff2'),
+    url('/fonts/AktivGroteskGeberit_LtIt.ttf') format('truetype');
+}
+
+/* ── Global reset ─────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #0f1117;
+  color: #ffffff;
+  font-family: 'AktivGroteskGeberit', Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
