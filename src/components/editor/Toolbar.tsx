@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { GeberitAd01Data } from '@/types/template';
 import { ExportedJSON, TEMPLATE_VERSION } from '@/types/template';
 
@@ -12,9 +13,15 @@ interface Props {
 }
 
 export default function Toolbar({ data, templateId, onImport, onReset }: Props) {
+  const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const handleLogout = async () => {
+    await fetch('/api/auth', { method: 'DELETE' });
+    router.replace('/login');
+  };
 
   // ─── JSON Export ────────────────────────────────────────────────────────
   const handleExportJSON = () => {
@@ -152,6 +159,18 @@ export default function Toolbar({ data, templateId, onImport, onReset }: Props) 
         style={{ backgroundColor: pdfLoading ? '#003a5c' : '#004673' }}
       >
         {pdfLoading ? 'Generating PDF…' : 'Export PDF'}
+      </button>
+
+      {/* Separator */}
+      <div className="w-px h-5 bg-gray-700 mx-1" />
+
+      {/* Logout */}
+      <button
+        onClick={handleLogout}
+        className="px-3 py-1.5 text-sm text-gray-500 hover:text-red-400 border border-transparent hover:border-red-900 rounded transition-colors"
+        title="Sign out"
+      >
+        Sign out
       </button>
     </div>
   );

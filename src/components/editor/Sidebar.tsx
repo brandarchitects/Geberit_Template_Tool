@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { GeberitAd01Data } from '@/types/template';
 import BulletListEditor from './BulletListEditor';
 import ImagePicker from './ImagePicker';
@@ -10,155 +10,130 @@ interface Props {
   onChange: (data: GeberitAd01Data) => void;
 }
 
-// ─── Field ────────────────────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+const BG = '#161929';
+const BORDER = '#252840';
+const INPUT_BG = '#1c2035';
+const INPUT_BORDER = '#2a2f4a';
+
+// ─── Section divider ──────────────────────────────────────────────────────────
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      className="flex items-center gap-2 px-4 pt-5 pb-2 sticky top-0 z-10"
+      style={{ backgroundColor: BG }}
+    >
+      <div className="w-0.5 h-4 rounded-full flex-shrink-0" style={{ backgroundColor: '#004673' }} />
+      <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400">
+        {children}
+      </span>
+    </div>
+  );
+}
+
+// ─── Single-line field ────────────────────────────────────────────────────────
 
 function Field({
   label,
   value,
   onChange,
-  rows = 1,
   placeholder,
-  accent,
+  hint,
+  color,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
-  rows?: number;
   placeholder?: string;
-  accent?: string; // optional colored dot/swatch next to label
+  hint?: string;
+  color?: string; // text colour for the input
 }) {
   return (
-    <div className="mb-4">
-      <label className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-1.5">
-        {accent && (
-          <span
-            className="inline-block w-2 h-2 rounded-sm flex-shrink-0"
-            style={{ backgroundColor: accent }}
-          />
-        )}
+    <div className="px-4 mb-3">
+      <label className="block text-[11px] font-semibold text-gray-500 uppercase tracking-widest mb-1">
         {label}
+        {hint && <span className="normal-case tracking-normal font-normal text-gray-600 ml-1">· {hint}</span>}
       </label>
-      {rows === 1 ? (
-        <input
-          type="text"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder ?? label}
-          className="w-full rounded-md px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition"
-          style={{ backgroundColor: '#1e2130', border: '1px solid #2e3245' }}
-        />
-      ) : (
-        <textarea
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          rows={rows}
-          placeholder={placeholder ?? label}
-          className="w-full rounded-md px-3 py-2 text-sm text-white placeholder-gray-600 resize-y focus:outline-none focus:ring-1 focus:ring-blue-500 transition"
-          style={{ backgroundColor: '#1e2130', border: '1px solid #2e3245' }}
-        />
-      )}
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onFocus={(e) => e.currentTarget.select()}
+        placeholder={placeholder ?? label}
+        className="w-full rounded-lg px-3 py-2 text-sm placeholder-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500 transition"
+        style={{
+          backgroundColor: INPUT_BG,
+          border: `1px solid ${INPUT_BORDER}`,
+          color: color ?? '#e5e7eb',
+        }}
+      />
     </div>
   );
 }
 
-// ─── Accordion section ────────────────────────────────────────────────────────
+// ─── Multi-line field ─────────────────────────────────────────────────────────
 
-function AccordionSection({
+function TextArea({
   label,
-  badge,
-  open,
-  onToggle,
-  children,
+  value,
+  onChange,
+  placeholder,
+  hint,
+  rows = 3,
 }: {
   label: string;
-  badge?: string;
-  open: boolean;
-  onToggle: () => void;
-  children: React.ReactNode;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+  hint?: string;
+  rows?: number;
 }) {
   return (
-    <div
-      className="border-b"
-      style={{ borderColor: '#1e2130' }}
-    >
-      <button
-        onClick={onToggle}
-        className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-white/5 transition-colors group"
-      >
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">
-            {label}
-          </span>
-          {badge && (
-            <span
-              className="text-[10px] font-semibold px-1.5 py-0.5 rounded text-gray-400"
-              style={{ backgroundColor: '#1e2130' }}
-            >
-              {badge}
-            </span>
-          )}
-        </div>
-        <svg
-          className="w-4 h-4 text-gray-500 flex-shrink-0 transition-transform duration-200"
-          style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-
-      {open && (
-        <div className="px-4 pt-1 pb-4">
-          {children}
-        </div>
-      )}
+    <div className="px-4 mb-3">
+      <label className="block text-[11px] font-semibold text-gray-500 uppercase tracking-widest mb-1">
+        {label}
+        {hint && <span className="normal-case tracking-normal font-normal text-gray-600 ml-1">· {hint}</span>}
+      </label>
+      <textarea
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onFocus={(e) => e.currentTarget.select()}
+        rows={rows}
+        placeholder={placeholder}
+        className="w-full rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-700 resize-y focus:outline-none focus:ring-1 focus:ring-blue-500 transition"
+        style={{
+          backgroundColor: INPUT_BG,
+          border: `1px solid ${INPUT_BORDER}`,
+          minHeight: `${rows * 1.6 + 1}rem`,
+        }}
+      />
     </div>
   );
 }
 
-// ─── Subsection label ─────────────────────────────────────────────────────────
+// ─── Divider ──────────────────────────────────────────────────────────────────
 
-function SubLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-widest mb-2 mt-1">
-      {children}
-    </p>
-  );
+function Divider() {
+  return <div className="mx-4 my-1 border-t" style={{ borderColor: BORDER }} />;
 }
 
 // ─── Main Sidebar ─────────────────────────────────────────────────────────────
-
-type SectionKey = 'background' | 'hero' | 'intro' | 'about' | 'responsibilities' | 'profile' | 'application' | 'contact';
 
 export default function Sidebar({ data, onChange }: Props) {
   const set = <K extends keyof GeberitAd01Data>(key: K, value: GeberitAd01Data[K]) =>
     onChange({ ...data, [key]: value });
 
-  const [open, setOpen] = useState<Record<SectionKey, boolean>>({
-    background: true,
-    hero: true,
-    intro: true,
-    about: false,
-    responsibilities: false,
-    profile: false,
-    application: false,
-    contact: false,
-  });
-
-  const toggle = (k: SectionKey) => setOpen((p) => ({ ...p, [k]: !p[k] }));
-
   return (
-    <div className="h-full flex flex-col overflow-hidden" style={{ color: '#e5e7eb' }}>
+    <div
+      className="h-full overflow-y-auto"
+      style={{ backgroundColor: BG, color: '#e5e7eb' }}
+    >
 
-      {/* ── Background & Gradient ─────────────────────────────────────────── */}
-      <AccordionSection
-        label="Background Image"
-        open={open.background}
-        onToggle={() => toggle('background')}
-      >
+      {/* ── Background & Gradient ──────────────────────────────────────────── */}
+      <SectionTitle>Background &amp; Style</SectionTitle>
+      <div className="px-4 pb-2">
         <ImagePicker
           selectedId={data.backgroundImageId}
           customBase64={data.customBackgroundBase64}
@@ -175,174 +150,153 @@ export default function Sidebar({ data, onChange }: Props) {
           gradientOpacity={data.gradientOpacity}
           onGradientChange={(v) => set('gradientOpacity', v)}
         />
-      </AccordionSection>
-
-      {/* ── Hero Taglines ─────────────────────────────────────────────────── */}
-      <AccordionSection
-        label="Hero Taglines"
-        badge="40 pt"
-        open={open.hero}
-        onToggle={() => toggle('hero')}
-      >
-        <Field
-          label="Line 1 — white · light"
-          value={data.tagline1}
-          onChange={(v) => set('tagline1', v)}
-          placeholder="YOUR IDEAS,"
-        />
-        <Field
-          label="Line 2 — white · light"
-          value={data.tagline2}
-          onChange={(v) => set('tagline2', v)}
-          placeholder="OUR INNOVATIONS"
-        />
-        <div className="mb-4">
-          <label className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-1.5">
-            <span
-              className="inline-block w-2 h-2 rounded-sm flex-shrink-0"
-              style={{ backgroundColor: '#B4CDF0' }}
-            />
-            Line 3 — bold · light blue
-          </label>
-          <input
-            type="text"
-            value={data.tagline3}
-            onChange={(e) => set('tagline3', e.target.value)}
-            placeholder="THE PERFECT FIT"
-            className="w-full rounded-md px-3 py-2 text-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-400 transition"
-            style={{
-              backgroundColor: '#1e2130',
-              border: '1px solid #2e3245',
-              color: '#B4CDF0',
-            }}
-          />
-        </div>
-      </AccordionSection>
-
-      {/* ── Job Introduction ──────────────────────────────────────────────── */}
-      <AccordionSection
-        label="Job Introduction"
-        open={open.intro}
-        onToggle={() => toggle('intro')}
-      >
-        <Field
-          label="Label — 11 pt · light"
-          value={data.lookingForLabel}
-          onChange={(v) => set('lookingForLabel', v)}
-          placeholder="We are looking for"
-        />
-        <Field
-          label="Job Title — bold"
-          value={data.jobTitle}
-          onChange={(v) => set('jobTitle', v)}
-          placeholder="Job Title / Role"
-        />
-      </AccordionSection>
-
-      {/* Scrollable area for remaining sections */}
-      <div className="flex-1 overflow-y-auto">
-
-        {/* ── About Geberit ─────────────────────────────────────────────── */}
-        <AccordionSection
-          label="About Geberit"
-          open={open.about}
-          onToggle={() => toggle('about')}
-        >
-          <Field
-            label="Section title"
-            value={data.aboutTitle}
-            onChange={(v) => set('aboutTitle', v)}
-          />
-          <Field
-            label="Body text"
-            value={data.aboutText}
-            onChange={(v) => set('aboutText', v)}
-            rows={6}
-            placeholder="Company description…"
-          />
-        </AccordionSection>
-
-        {/* ── Responsibilities ──────────────────────────────────────────── */}
-        <AccordionSection
-          label="Main Responsibilities"
-          badge={`${data.responsibilitiesItems.length} items`}
-          open={open.responsibilities}
-          onToggle={() => toggle('responsibilities')}
-        >
-          <Field
-            label="Section title"
-            value={data.responsibilitiesTitle}
-            onChange={(v) => set('responsibilitiesTitle', v)}
-          />
-          <SubLabel>Bullet points</SubLabel>
-          <BulletListEditor
-            items={data.responsibilitiesItems}
-            onChange={(items) => set('responsibilitiesItems', items)}
-            placeholder="Responsibility…"
-          />
-        </AccordionSection>
-
-        {/* ── Your Profile ──────────────────────────────────────────────── */}
-        <AccordionSection
-          label="Your Profile"
-          badge={`${data.profileItems.length} items`}
-          open={open.profile}
-          onToggle={() => toggle('profile')}
-        >
-          <Field
-            label="Section title"
-            value={data.profileTitle}
-            onChange={(v) => set('profileTitle', v)}
-          />
-          <SubLabel>Bullet points</SubLabel>
-          <BulletListEditor
-            items={data.profileItems}
-            onChange={(items) => set('profileItems', items)}
-            placeholder="Profile requirement…"
-          />
-        </AccordionSection>
-
-        {/* ── Application ───────────────────────────────────────────────── */}
-        <AccordionSection
-          label="Application"
-          open={open.application}
-          onToggle={() => toggle('application')}
-        >
-          <Field
-            label="Section title"
-            value={data.applicationTitle}
-            onChange={(v) => set('applicationTitle', v)}
-          />
-          <Field
-            label="Body text"
-            value={data.applicationText}
-            onChange={(v) => set('applicationText', v)}
-            rows={3}
-          />
-        </AccordionSection>
-
-        {/* ── Contact ───────────────────────────────────────────────────── */}
-        <AccordionSection
-          label="Contact"
-          open={open.contact}
-          onToggle={() => toggle('contact')}
-        >
-          <Field
-            label="Section title"
-            value={data.contactTitle}
-            onChange={(v) => set('contactTitle', v)}
-          />
-          <Field
-            label="Name, address, phone"
-            value={data.contactText}
-            onChange={(v) => set('contactText', v)}
-            rows={3}
-            placeholder={'Geberit International AG\nHR Business Partner\nCH-8645 Jona, +41 55 221 62 60'}
-          />
-        </AccordionSection>
-
-        <div className="h-6" />
       </div>
+
+      <Divider />
+
+      {/* ── Hero Taglines ──────────────────────────────────────────────────── */}
+      <SectionTitle>Hero Taglines</SectionTitle>
+
+      <Field
+        label="Line 1"
+        hint="white · light · 40 pt"
+        value={data.tagline1}
+        onChange={(v) => set('tagline1', v)}
+        placeholder="YOUR IDEAS,"
+      />
+      <Field
+        label="Line 2"
+        hint="white · light · 40 pt"
+        value={data.tagline2}
+        onChange={(v) => set('tagline2', v)}
+        placeholder="OUR INNOVATIONS"
+      />
+      <Field
+        label="Line 3"
+        hint="light blue · bold · 40 pt"
+        value={data.tagline3}
+        onChange={(v) => set('tagline3', v)}
+        placeholder="THE PERFECT FIT"
+        color="#B4CDF0"
+      />
+
+      <Divider />
+
+      {/* ── Job Introduction ───────────────────────────────────────────────── */}
+      <SectionTitle>Job Introduction</SectionTitle>
+
+      <Field
+        label="Looking-for label"
+        hint="light · 11 pt"
+        value={data.lookingForLabel}
+        onChange={(v) => set('lookingForLabel', v)}
+        placeholder="We are looking for"
+      />
+      <Field
+        label="Job Title"
+        hint="bold"
+        value={data.jobTitle}
+        onChange={(v) => set('jobTitle', v)}
+        placeholder="Electrical Engineer FH"
+      />
+
+      <Divider />
+
+      {/* ── About Geberit ──────────────────────────────────────────────────── */}
+      <SectionTitle>About Geberit</SectionTitle>
+
+      <Field
+        label="Section title"
+        value={data.aboutTitle}
+        onChange={(v) => set('aboutTitle', v)}
+      />
+      <TextArea
+        label="Body text"
+        value={data.aboutText}
+        onChange={(v) => set('aboutText', v)}
+        rows={5}
+        placeholder="Company description…"
+      />
+
+      <Divider />
+
+      {/* ── Main Responsibilities ──────────────────────────────────────────── */}
+      <SectionTitle>Main Responsibilities</SectionTitle>
+
+      <Field
+        label="Section title"
+        value={data.responsibilitiesTitle}
+        onChange={(v) => set('responsibilitiesTitle', v)}
+      />
+      <div className="px-4 mb-3">
+        <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-widest mb-2">
+          Bullet points
+        </p>
+        <BulletListEditor
+          items={data.responsibilitiesItems}
+          onChange={(items) => set('responsibilitiesItems', items)}
+          placeholder="Responsibility…"
+        />
+      </div>
+
+      <Divider />
+
+      {/* ── Your Profile ───────────────────────────────────────────────────── */}
+      <SectionTitle>Your Profile</SectionTitle>
+
+      <Field
+        label="Section title"
+        value={data.profileTitle}
+        onChange={(v) => set('profileTitle', v)}
+      />
+      <div className="px-4 mb-3">
+        <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-widest mb-2">
+          Bullet points
+        </p>
+        <BulletListEditor
+          items={data.profileItems}
+          onChange={(items) => set('profileItems', items)}
+          placeholder="Profile requirement…"
+        />
+      </div>
+
+      <Divider />
+
+      {/* ── Application ────────────────────────────────────────────────────── */}
+      <SectionTitle>Application</SectionTitle>
+
+      <Field
+        label="Section title"
+        value={data.applicationTitle}
+        onChange={(v) => set('applicationTitle', v)}
+      />
+      <TextArea
+        label="Body text"
+        value={data.applicationText}
+        onChange={(v) => set('applicationText', v)}
+        rows={3}
+      />
+
+      <Divider />
+
+      {/* ── Contact ────────────────────────────────────────────────────────── */}
+      <SectionTitle>Contact</SectionTitle>
+
+      <Field
+        label="Section title"
+        value={data.contactTitle}
+        onChange={(v) => set('contactTitle', v)}
+      />
+      <TextArea
+        label="Name, address, phone"
+        value={data.contactText}
+        onChange={(v) => set('contactText', v)}
+        rows={3}
+        placeholder={'Geberit International AG\nHR Business Partner\nCH-8645 Jona, +41 55 221 62 60'}
+      />
+
+      {/* Bottom padding */}
+      <div className="h-10" />
     </div>
   );
 }
