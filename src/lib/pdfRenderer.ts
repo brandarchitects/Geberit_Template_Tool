@@ -105,8 +105,9 @@ function sectionHtml(
     : '';
 
   const listHtml =
-    items && items.length > 0
+    items && items.filter(s => s.trim()).length > 0
       ? `<ul style="margin:0;padding-left:3.5mm;list-style-type:disc;">${items
+          .filter(s => s.trim())
           .map(
             (item) =>
               `<li style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:${C.bulletWeight};font-size:${C.bulletSize};color:${C.textBlack};line-height:${C.bulletLineHeight};margin-bottom:0.3mm;padding-left:0.5mm;">${escapeHtml(item)}</li>`

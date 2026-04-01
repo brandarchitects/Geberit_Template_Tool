@@ -229,13 +229,10 @@ export default function Sidebar({ data, onChange }: Props) {
         onChange={(v) => set('responsibilitiesTitle', v)}
       />
       <div className="px-4 mb-3">
-        <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-widest mb-2">
-          Bullet points
-        </p>
         <BulletListEditor
           items={data.responsibilitiesItems}
           onChange={(items) => set('responsibilitiesItems', items)}
-          placeholder="Responsibility…"
+          placeholder={"Responsibility 1\nResponsibility 2\nResponsibility 3"}
         />
       </div>
 
@@ -250,13 +247,10 @@ export default function Sidebar({ data, onChange }: Props) {
         onChange={(v) => set('profileTitle', v)}
       />
       <div className="px-4 mb-3">
-        <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-widest mb-2">
-          Bullet points
-        </p>
         <BulletListEditor
           items={data.profileItems}
           onChange={(items) => set('profileItems', items)}
-          placeholder="Profile requirement…"
+          placeholder={"Requirement 1\nRequirement 2\nRequirement 3"}
         />
       </div>
 

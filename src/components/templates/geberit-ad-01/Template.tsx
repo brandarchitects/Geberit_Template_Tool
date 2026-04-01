@@ -79,9 +79,9 @@ function Section({ title, text, items, blueTitle = true }: SectionProps) {
       )}
 
       {/* Bullet list */}
-      {items && items.length > 0 && (
+      {items && items.filter(s => s.trim()).length > 0 && (
         <ul style={{ margin: 0, paddingLeft: '3.5mm', listStyleType: 'disc' }}>
-          {items.map((item, i) => (
+          {items.filter(s => s.trim()).map((item, i) => (
             <li
               key={i}
               style={{
