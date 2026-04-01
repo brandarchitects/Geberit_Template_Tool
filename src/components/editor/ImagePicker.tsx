@@ -38,12 +38,35 @@ export default function ImagePicker({
   };
 
   const isCustomActive = selectedId === 'custom' && !!customBase64;
+  const previewSrc = isCustomActive
+    ? `data:image/jpeg;base64,${customBase64}`
+    : `/images/${selectedId}.jpg`;
 
   return (
     <div className="space-y-3">
 
-      {/* ── Predefined images — 4-col compact grid ── */}
-      <div className="grid grid-cols-4 gap-1.5">
+      {/* ── Selected image preview ─────────────────────────────────────── */}
+      <div
+        className="relative w-full rounded-lg overflow-hidden"
+        style={{ aspectRatio: '16/9', backgroundColor: '#1c2035' }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          key={previewSrc}
+          src={previewSrc}
+          alt="Selected background"
+          className="w-full h-full object-cover"
+        />
+        <div
+          className="absolute bottom-0 left-0 right-0 px-2 py-1 text-[10px] font-semibold truncate"
+          style={{ background: 'rgba(0,0,0,0.55)', color: 'rgba(255,255,255,0.7)' }}
+        >
+          {isCustomActive ? 'Custom image' : selectedId}
+        </div>
+      </div>
+
+      {/* ── Grid thumbnails ───────────────────────────────────────────── */}
+      <div className="grid grid-cols-4 gap-1">
         {BACKGROUND_IMAGES.map((id) => {
           const active = selectedId === id && !isCustomActive;
           const num = id.replace('Geberit_Ad_', '');
@@ -59,26 +82,27 @@ export default function ImagePicker({
                 outlineOffset: '1px',
               }}
             >
+              {/* Number fallback layer (behind image) */}
+              <div
+                className="absolute inset-0 flex items-center justify-center text-[9px] font-bold"
+                style={{ backgroundColor: '#1c2035', color: '#374151' }}
+              >
+                {num}
+              </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={`/images/${id}.jpg`}
                 alt={id}
-                className="w-full h-full object-cover"
-                onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0'; }}
+                className="absolute inset-0 w-full h-full object-cover"
               />
-              {/* Fallback + number badge */}
-              <div
-                className="absolute inset-0 flex items-center justify-center text-[10px] font-bold"
-                style={{ backgroundColor: '#1c2035', color: '#4b5563' }}
-              >
-                {num}
-              </div>
-              {/* Active check */}
+              {/* Active check badge */}
               {active && (
-                <div className="absolute top-0.5 right-0.5 w-3.5 h-3.5 rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: '#3b82f6' }}>
-                  <svg className="w-2 h-2 text-white" viewBox="0 0 10 10" fill="currentColor">
-                    <path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                <div
+                  className="absolute top-0.5 right-0.5 w-3.5 h-3.5 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: '#3b82f6' }}
+                >
+                  <svg className="w-2 h-2 text-white" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M1.5 5l2.5 2.5 4.5-4.5" />
                   </svg>
                 </div>
               )}
@@ -87,7 +111,7 @@ export default function ImagePicker({
         })}
       </div>
 
-      {/* ── Custom upload ── */}
+      {/* ── Custom upload ─────────────────────────────────────────────── */}
       <input
         ref={fileInputRef}
         type="file"
@@ -106,7 +130,7 @@ export default function ImagePicker({
         {isCustomActive ? '✓ Custom image active — click to replace' : '↑ Upload custom image'}
       </button>
 
-      {/* ── Gradient opacity ── */}
+      {/* ── Gradient opacity ──────────────────────────────────────────── */}
       <div>
         <div className="flex justify-between text-[11px] mb-1">
           <span className="text-gray-500 uppercase tracking-widest font-semibold">Gradient</span>

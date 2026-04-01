@@ -16,6 +16,9 @@ export const BACKGROUND_IMAGES = [
   'Geberit_Ad_11',
   'Geberit_Ad_12',
   'Geberit_Ad_13',
+  'Geberit_Ad_14',
+  'Geberit_Ad_15',
+  'Geberit_Ad_16',
 ] as const;
 
 export const DEFAULT_BACKGROUND_ID = 'Geberit_Ad_01';
