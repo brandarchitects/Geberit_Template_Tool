@@ -38,32 +38,9 @@ export default function ImagePicker({
   };
 
   const isCustomActive = selectedId === 'custom' && !!customBase64;
-  const previewSrc = isCustomActive
-    ? `data:image/jpeg;base64,${customBase64}`
-    : `/images/${selectedId}.jpg`;
 
   return (
     <div className="space-y-3">
-
-      {/* ── Selected image preview ─────────────────────────────────────── */}
-      <div
-        className="relative w-full rounded-lg overflow-hidden"
-        style={{ aspectRatio: '16/9', backgroundColor: '#1c2035' }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          key={previewSrc}
-          src={previewSrc}
-          alt="Selected background"
-          className="w-full h-full object-cover"
-        />
-        <div
-          className="absolute bottom-0 left-0 right-0 px-2 py-1 text-[10px] font-semibold truncate"
-          style={{ background: 'rgba(0,0,0,0.55)', color: 'rgba(255,255,255,0.7)' }}
-        >
-          {isCustomActive ? 'Custom image' : selectedId}
-        </div>
-      </div>
 
       {/* ── Grid thumbnails ───────────────────────────────────────────── */}
       <div className="grid grid-cols-4 gap-1">
