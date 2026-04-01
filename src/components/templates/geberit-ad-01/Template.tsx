@@ -36,39 +36,31 @@ interface SectionProps {
 function Section({ title, text, items, blueTitle = true }: SectionProps) {
   return (
     <div style={{ marginBottom: '4mm' }}>
-      {/* Title row */}
+      {/* Title */}
       <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          marginBottom: C.separatorMarginTop,
+          fontFamily: C.fontFamily,
+          fontWeight: C.sectionTitleWeight,
+          fontSize: C.sectionTitleSize,
+          color: blueTitle ? C.geberitBlue : C.textBlack,
+          textTransform: 'uppercase',
+          letterSpacing: '0.04em',
+          marginBottom: '1mm',
         }}
       >
-        <span
-          style={{
-            fontFamily: C.fontFamily,
-            fontWeight: C.sectionTitleWeight,
-            fontSize: C.sectionTitleSize,
-            color: blueTitle ? C.geberitBlue : C.textBlack,
-            textTransform: 'uppercase',
-            letterSpacing: '0.04em',
-            flexShrink: 0,
-            marginRight: '2mm',
-          }}
-        >
-          {title}
-        </span>
-        {blueTitle && (
-          <div
-            style={{
-              flex: 1,
-              height: C.separatorThickness,
-              backgroundColor: C.separatorColor,
-              marginTop: '0.5mm',
-            }}
-          />
-        )}
+        {title}
       </div>
+      {/* Full-width separator line — 2pt, below title */}
+      {blueTitle && (
+        <div
+          style={{
+            width: '100%',
+            height: '2pt',
+            backgroundColor: C.separatorColor,
+            marginBottom: C.separatorMarginBottom,
+          }}
+        />
+      )}
 
       {/* Body text */}
       {text && (
