@@ -93,7 +93,6 @@ export default function LoginForm() {
                 backgroundColor: '#f4f6f9',
                 border: '1px solid #dce3ed',
                 color: '#1a2433',
-                focusRingColor: '#004673',
               }}
               placeholder="Enter access password"
             />
