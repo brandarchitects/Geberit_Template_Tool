@@ -101,7 +101,7 @@ export default function Toolbar({ data, templateId, onTemplateChange, onImport, 
       {/* Brand */}
       <div className="flex items-center gap-2 mr-3">
         <div className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ backgroundColor: '#004673' }} />
-        <span className="text-white font-semibold text-sm tracking-wide whitespace-nowrap">Geberit</span>
+        <span className="text-white font-semibold text-sm tracking-wide whitespace-nowrap">Geberit HR Template</span>
       </div>
 
       {/* Template selector tabs */}

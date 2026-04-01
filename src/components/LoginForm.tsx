@@ -63,7 +63,7 @@ export default function LoginForm() {
             className="mt-3 text-xs uppercase tracking-widest"
             style={{ color: 'rgba(255,255,255,0.55)', letterSpacing: '0.15em' }}
           >
-            Template Tool
+            HR Template
           </p>
         </div>
 

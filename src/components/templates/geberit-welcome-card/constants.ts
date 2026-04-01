@@ -19,11 +19,11 @@ export const WC = {
 
   // ─── Text content block (anchored bottom-left) ──────────────────────────────
   contentLeft:     '20mm',
-  contentBottom:   '20mm',
+  contentBottom:   '15mm',
   contentMaxWidth: '160mm',
 
   // ─── Taglines ───────────────────────────────────────────────────────────────
-  taglineFontSize:   '36pt',
+  taglineFontSize:   '38pt',
   taglineLineHeight: '41.5pt',
 
   // ─── Body text ──────────────────────────────────────────────────────────────
