@@ -180,10 +180,10 @@ export function buildPdfHtml(data: GeberitAd01Data): string {
     ${bgSrc ? `<img src="${bgSrc}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" />` : `<div style="width:100%;height:100%;background:#004673;"></div>`}
 
     <!-- Gradient overlay -->
-    <div style="position:absolute;inset:0;background:${gradient};"></div>
+    <div style="position:absolute;inset:0;background:${gradient};mix-blend-mode:multiply;"></div>
 
     <!-- Logo -->
-    ${logoSrc ? `<img src="${logoSrc}" alt="GEBERIT" style="position:absolute;top:${C.logoTop};right:${C.logoRight};width:${C.logoWidth};height:auto;" />` : ''}
+    ${logoSrc ? `<img src="${logoSrc}" alt="GEBERIT" style="position:absolute;top:${C.logoTop};left:${C.logoLeft};width:${C.logoWidth};height:auto;" />` : ''}
 
     <!-- Taglines -->
     <div style="position:absolute;bottom:${C.taglineBottom};left:${C.taglineLeft};">
