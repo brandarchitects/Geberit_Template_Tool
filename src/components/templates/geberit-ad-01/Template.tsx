@@ -164,7 +164,7 @@ export default function GeberitAd01Template({ data, previewMode = true, baseUrl 
           style={{
             position: 'absolute',
             top: C.logoTop,
-            left: C.logoLeft,
+            right: C.logoRight,
             width: C.logoWidth,
             height: 'auto',
           }}

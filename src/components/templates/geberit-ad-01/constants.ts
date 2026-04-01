@@ -18,10 +18,10 @@ export const C = {
   heroHeight: '140mm',
 
   // ─── Geberit Logo ─────────────────────────────────────────────────────────
-  // Positioned top-left per visual spec (screenshot reference)
+  // Spec: 10 mm from top, 15 mm from right
   // Width: 520 px original → rendered at ~38 mm (height auto: 38 × 79/520 ≈ 5.77 mm)
-  logoTop: '8mm',
-  logoLeft: '10mm',
+  logoTop: '10mm',
+  logoRight: '15mm',
   logoWidth: '38mm',
 
   // ─── Taglines (bottom-left of hero) ──────────────────────────────────────
