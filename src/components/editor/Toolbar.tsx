@@ -63,15 +63,25 @@ export default function Toolbar({ data, templateId, onImport, onReset }: Props) 
         body: JSON.stringify({ templateId, data }),
       });
       if (!res.ok) {
-        const msg = await res.text();
-        throw new Error(msg || 'PDF generation failed');
+        try {
+          const json = await res.json();
+          if (json.error === 'no_browser') {
+            throw new Error('PDF export requires Chrome. Please deploy to Vercel, or install Google Chrome locally.');
+          }
+          throw new Error(json.message || 'PDF generation failed');
+        } catch (parseErr) {
+          if (parseErr instanceof SyntaxError) throw new Error('PDF generation failed');
+          throw parseErr;
+        }
       }
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = `geberit_ad_${Date.now()}.pdf`;
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'PDF generation failed');

@@ -97,10 +97,8 @@ function sectionHtml(
 ): string {
   const titleColor = blueTitle ? C.geberitBlue : C.textBlack;
   const titleHtml = `
-    <div class="section-title-row" style="display:flex;align-items:center;margin-bottom:${C.separatorMarginTop};">
-      <span style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:${C.sectionTitleWeight};font-size:${C.sectionTitleSize};color:${titleColor};text-transform:uppercase;letter-spacing:0.04em;flex-shrink:0;margin-right:2mm;">${escapeHtml(title)}</span>
-      ${blueTitle ? `<div style="flex:1;height:${C.separatorThickness};background-color:${C.separatorColor};margin-top:0.5mm;"></div>` : ''}
-    </div>`;
+    <div style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:${C.sectionTitleWeight};font-size:${C.sectionTitleSize};color:${titleColor};text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1mm;">${escapeHtml(title)}</div>
+    ${blueTitle ? `<div style="width:100%;height:2pt;background-color:${C.separatorColor};margin-bottom:${C.separatorMarginBottom};"></div>` : ''}`;
 
   const bodyHtml = text
     ? `<div style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:${C.bodyWeight};font-size:${C.bodySize};color:${C.textBlack};line-height:${C.bodyLineHeight};white-space:pre-line;">${escapeHtml(text)}</div>`
