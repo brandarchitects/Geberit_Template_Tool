@@ -11,23 +11,23 @@ export const WC = {
   pageHeight: '182mm',
 
   // ─── Geberit Logo ───────────────────────────────────────────────────────────
-  logoTop:   '10mm',
-  logoRight: '15mm',
-  logoWidth: '35mm',
+  logoTop:   '14mm',
+  logoRight: '18mm',
+  logoWidth: '48mm',
 
   // ─── Text content block (anchored bottom-left) ──────────────────────────────
-  contentLeft:     '12mm',
-  contentBottom:   '12mm',
+  contentLeft:     '20mm',
+  contentBottom:   '20mm',
   contentMaxWidth: '160mm',
 
   // ─── Taglines ───────────────────────────────────────────────────────────────
   taglineFontSize:   '36pt',
-  taglineLineHeight: '42pt',
+  taglineLineHeight: '41.5pt',
 
   // ─── Body text ──────────────────────────────────────────────────────────────
-  bodySize:       '11.5pt',
-  bodyLineHeight: '16pt',
-  bodyMarginTop:  '6mm',
+  bodySize:        '17pt',
+  bodyLineHeight:  '21pt',
+  bodyMarginTop:   '6mm',
   signoffMarginTop: '5mm',
 
   // ─── Colors ─────────────────────────────────────────────────────────────────
