@@ -8,6 +8,8 @@
  * Logo source: Logo_Geberit_white_transparent.png  520 × 79 px
  */
 
+import { BACKGROUND_IMAGES, DEFAULT_BACKGROUND_ID } from '@/lib/backgroundImages';
+
 export const C = {
   // ─── Page ────────────────────────────────────────────────────────────────
   pageWidth: '210mm',
@@ -78,16 +80,8 @@ export const C = {
   white: '#ffffff',
 
   // ─── Available background images ─────────────────────────────────────────
-  backgroundImages: [
-    'Geberit_Ad_01',
-    'Geberit_Ad_02',
-    'Geberit_Ad_03',
-    'Geberit_Ad_04',
-    'Geberit_Ad_05',
-    'Geberit_Ad_06',
-  ] as string[],
-
-  defaultBackgroundId: 'Geberit_Ad_01',
+  backgroundImages: BACKGROUND_IMAGES as unknown as string[],
+  defaultBackgroundId: DEFAULT_BACKGROUND_ID,
 
   // ─── Font file names (used by pdfRenderer for base64 embedding) ───────────
   fonts: {

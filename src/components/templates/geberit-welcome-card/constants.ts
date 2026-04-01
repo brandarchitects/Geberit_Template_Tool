@@ -5,6 +5,8 @@
  * Full-bleed photo with gradient overlay and text overlay.
  */
 
+import { BACKGROUND_IMAGES, DEFAULT_BACKGROUND_ID } from '@/lib/backgroundImages';
+
 export const WC = {
   // ─── Page ──────────────────────────────────────────────────────────────────
   pageWidth:  '257mm',
@@ -38,17 +40,9 @@ export const WC = {
   // ─── Font ───────────────────────────────────────────────────────────────────
   fontFamily: "'AktivGroteskGeberit', Arial, sans-serif",
 
-  // ─── Available background images (shared with Ad01) ─────────────────────────
-  backgroundImages: [
-    'Geberit_Ad_01',
-    'Geberit_Ad_02',
-    'Geberit_Ad_03',
-    'Geberit_Ad_04',
-    'Geberit_Ad_05',
-    'Geberit_Ad_06',
-  ] as string[],
-
-  defaultBackgroundId: 'Geberit_Ad_01',
+  // ─── Available background images (shared) ───────────────────────────────────
+  backgroundImages: BACKGROUND_IMAGES as unknown as string[],
+  defaultBackgroundId: DEFAULT_BACKGROUND_ID,
 
   // ─── Font file names ─────────────────────────────────────────────────────────
   fonts: {

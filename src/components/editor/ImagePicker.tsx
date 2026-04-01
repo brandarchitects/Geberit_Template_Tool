@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { C } from '@/components/templates/geberit-ad-01/constants';
+import { BACKGROUND_IMAGES } from '@/lib/backgroundImages';
 
 interface Props {
   selectedId: string;
@@ -34,7 +34,6 @@ export default function ImagePicker({
       onCustomUpload(base64, mimeType);
     };
     reader.readAsDataURL(file);
-    // Reset input so same file can be re-selected
     e.target.value = '';
   };
 
@@ -42,79 +41,85 @@ export default function ImagePicker({
 
   return (
     <div className="space-y-3">
-      {/* Predefined images grid */}
-      <div className="grid grid-cols-3 gap-2">
-        {C.backgroundImages.map((id) => (
-          <button
-            key={id}
-            onClick={() => onSelect(id)}
-            className={`relative aspect-[3/2] rounded overflow-hidden border-2 transition-colors ${
-              selectedId === id && !isCustomActive
-                ? 'border-blue-400'
-                : 'border-transparent hover:border-gray-500'
-            }`}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`/images/${id}.jpg`}
-              alt={id}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                // Show placeholder if image not yet uploaded
-                (e.target as HTMLImageElement).style.display = 'none';
+
+      {/* ── Predefined images — 4-col compact grid ── */}
+      <div className="grid grid-cols-4 gap-1.5">
+        {BACKGROUND_IMAGES.map((id) => {
+          const active = selectedId === id && !isCustomActive;
+          const num = id.replace('Geberit_Ad_', '');
+          return (
+            <button
+              key={id}
+              onClick={() => onSelect(id)}
+              title={id}
+              className="relative rounded overflow-hidden transition-all"
+              style={{
+                aspectRatio: '3/2',
+                outline: active ? '2px solid #3b82f6' : '2px solid transparent',
+                outlineOffset: '1px',
               }}
-            />
-            {/* Fallback placeholder */}
-            <div className="absolute inset-0 bg-gray-700 flex items-center justify-center text-gray-500 text-xs text-center px-1 -z-10">
-              {id.replace('Geberit_Ad_', 'Img ')}
-            </div>
-            {selectedId === id && !isCustomActive && (
-              <div className="absolute inset-0 ring-2 ring-blue-400 ring-inset rounded pointer-events-none" />
-            )}
-          </button>
-        ))}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`/images/${id}.jpg`}
+                alt={id}
+                className="w-full h-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0'; }}
+              />
+              {/* Fallback + number badge */}
+              <div
+                className="absolute inset-0 flex items-center justify-center text-[10px] font-bold"
+                style={{ backgroundColor: '#1c2035', color: '#4b5563' }}
+              >
+                {num}
+              </div>
+              {/* Active check */}
+              {active && (
+                <div className="absolute top-0.5 right-0.5 w-3.5 h-3.5 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: '#3b82f6' }}>
+                  <svg className="w-2 h-2 text-white" viewBox="0 0 10 10" fill="currentColor">
+                    <path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+              )}
+            </button>
+          );
+        })}
       </div>
 
-      {/* Custom image upload */}
-      <div>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          onChange={handleFileChange}
-          className="hidden"
-        />
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          className={`w-full py-2 text-sm rounded border-2 border-dashed transition-colors ${
-            isCustomActive
-              ? 'border-blue-400 text-white bg-gray-700'
-              : 'border-gray-600 text-gray-400 hover:border-gray-400 hover:text-white'
-          }`}
-        >
-          {isCustomActive ? '✓ Custom image active — click to replace' : '↑ Upload custom image'}
-        </button>
-      </div>
+      {/* ── Custom upload ── */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        onChange={handleFileChange}
+        className="hidden"
+      />
+      <button
+        onClick={() => fileInputRef.current?.click()}
+        className="w-full py-1.5 text-xs rounded border border-dashed transition-colors"
+        style={{
+          borderColor: isCustomActive ? '#3b82f6' : '#2a2f4a',
+          color: isCustomActive ? '#93c5fd' : '#6b7280',
+        }}
+      >
+        {isCustomActive ? '✓ Custom image active — click to replace' : '↑ Upload custom image'}
+      </button>
 
-      {/* Gradient opacity slider */}
+      {/* ── Gradient opacity ── */}
       <div>
-        <label className="block text-xs text-gray-400 mb-1">
-          Gradient opacity: <span className="text-white font-medium">{Math.round(gradientOpacity * 100)}%</span>
-        </label>
+        <div className="flex justify-between text-[11px] mb-1">
+          <span className="text-gray-500 uppercase tracking-widest font-semibold">Gradient</span>
+          <span className="text-gray-300 font-medium">{Math.round(gradientOpacity * 100)}%</span>
+        </div>
         <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.01}
+          type="range" min={0} max={1} step={0.01}
           value={gradientOpacity}
           onChange={(e) => onGradientChange(parseFloat(e.target.value))}
           className="w-full accent-blue-400"
         />
-        <div className="flex justify-between text-xs text-gray-600 mt-0.5">
-          <span>0%</span>
-          <span>100%</span>
-        </div>
       </div>
+
     </div>
   );
 }
