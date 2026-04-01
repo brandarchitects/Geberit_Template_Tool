@@ -146,12 +146,13 @@ export default function GeberitAd01Template({ data, previewMode = true, baseUrl 
           }}
         />
 
-        {/* Gradient overlay — Geberit Blue → transparent, bottom to top */}
+        {/* Gradient overlay — Geberit Blue → transparent, bottom to top, multiply blend */}
         <div
           style={{
             position: 'absolute',
             inset: 0,
             background: `linear-gradient(to top, rgba(0,70,115,${data.gradientOpacity}) 0%, rgba(0,70,115,${data.gradientOpacity * 0.3}) 45%, transparent 75%)`,
+            mixBlendMode: 'multiply',
           }}
         />
 
@@ -163,7 +164,7 @@ export default function GeberitAd01Template({ data, previewMode = true, baseUrl 
           style={{
             position: 'absolute',
             top: C.logoTop,
-            right: C.logoRight,
+            left: C.logoLeft,
             width: C.logoWidth,
             height: 'auto',
           }}

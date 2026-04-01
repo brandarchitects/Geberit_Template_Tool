@@ -38,30 +38,46 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0f1117' }}>
-      <div className="w-full max-w-sm">
-        {/* Logo / Brand */}
-        <div className="text-center mb-8">
-          <div
-            className="inline-block w-3 h-3 rounded-sm mb-4"
-            style={{ backgroundColor: '#004673' }}
+    <div
+      className="min-h-screen flex flex-col items-center justify-center"
+      style={{ backgroundColor: '#004673' }}
+    >
+      {/* Card */}
+      <div
+        className="w-full max-w-xs rounded-2xl overflow-hidden"
+        style={{ boxShadow: '0 24px 60px rgba(0,0,0,0.35)' }}
+      >
+        {/* Header band */}
+        <div
+          className="flex flex-col items-center justify-center py-8 px-8"
+          style={{ backgroundColor: '#003558' }}
+        >
+          {/* Geberit logo */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/Logo_Geberit_white_transparent.png"
+            alt="GEBERIT"
+            style={{ width: '140px', height: 'auto', display: 'block' }}
           />
-          <h1 className="text-white text-xl font-semibold tracking-wide">
-            Geberit Template Tool
-          </h1>
-          <p className="text-gray-500 text-sm mt-1">Sign in to continue</p>
+          <p
+            className="mt-3 text-xs uppercase tracking-widest"
+            style={{ color: 'rgba(255,255,255,0.55)', letterSpacing: '0.15em' }}
+          >
+            Template Tool
+          </p>
         </div>
 
-        {/* Card */}
+        {/* Form body */}
         <form
           onSubmit={handleSubmit}
-          className="rounded-lg p-6 space-y-4"
-          style={{ backgroundColor: '#1a1d27', border: '1px solid #2a2d3a' }}
+          className="flex flex-col gap-4 px-8 py-7"
+          style={{ backgroundColor: '#ffffff' }}
         >
           <div>
             <label
               htmlFor="password"
-              className="block text-xs text-gray-400 mb-1.5 uppercase tracking-wide"
+              className="block text-xs font-semibold uppercase tracking-wider mb-1.5"
+              style={{ color: '#004673', letterSpacing: '0.1em' }}
             >
               Password
             </label>
@@ -72,26 +88,36 @@ export default function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
               required
-              className="w-full rounded px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              style={{ backgroundColor: '#252836', border: '1px solid #3a3d4a' }}
-              placeholder="Enter password"
+              className="w-full rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2"
+              style={{
+                backgroundColor: '#f4f6f9',
+                border: '1px solid #dce3ed',
+                color: '#1a2433',
+                focusRingColor: '#004673',
+              }}
+              placeholder="Enter access password"
             />
           </div>
 
           {error && (
-            <p className="text-red-400 text-sm">{error}</p>
+            <p className="text-xs text-red-500 -mt-1">{error}</p>
           )}
 
           <button
             type="submit"
             disabled={loading || !password}
-            className="w-full py-2 text-sm font-medium text-white rounded transition-opacity disabled:opacity-50"
+            className="w-full py-2.5 text-sm font-semibold text-white rounded-lg transition-opacity disabled:opacity-40"
             style={{ backgroundColor: '#004673' }}
           >
             {loading ? 'Signing in…' : 'Sign in'}
           </button>
         </form>
       </div>
+
+      {/* Footer */}
+      <p className="mt-8 text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
+        © Geberit Group
+      </p>
     </div>
   );
 }
