@@ -15,6 +15,19 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
 
+  // Prevent browsers from caching public images — ensures updated files are
+  // always re-fetched (no stale thumbnails after replacing e.g. Geberit_Ad_11.jpg)
+  async headers() {
+    return [
+      {
+        source: '/images/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'no-cache, must-revalidate' },
+        ],
+      },
+    ];
+  },
+
   // Silence Turbopack warning (no custom webpack config needed)
   turbopack: {},
 };
