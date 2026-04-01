@@ -238,7 +238,7 @@ export default function GeberitAd01Template({ data, previewMode = true, baseUrl 
         }}
       >
         {/* ── Left column ──────────────────────────────────────────────── */}
-        <div style={{ flex: 1, overflow: 'hidden' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
           {/* Job title intro */}
           <div style={{ marginBottom: '5mm' }}>
             <div
@@ -271,7 +271,7 @@ export default function GeberitAd01Template({ data, previewMode = true, baseUrl 
         </div>
 
         {/* ── Right column ─────────────────────────────────────────────── */}
-        <div style={{ flex: 1, overflow: 'hidden' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
           <Section title={data.profileTitle} items={data.profileItems} />
           <Section title={data.applicationTitle} text={data.applicationText} blueTitle={false} />
           <Section title={data.contactTitle} text={data.contactText} blueTitle={false} />

@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { GeberitAd01Data } from '@/types/template';
+import { GeberitAd01Data, WelcomeCardData } from '@/types/template';
 import { C } from '@/components/templates/geberit-ad-01/constants';
+import { WC } from '@/components/templates/geberit-welcome-card/constants';
 
 // ─── Font loading ─────────────────────────────────────────────────────────────
 
@@ -201,9 +202,76 @@ export function buildPdfHtml(data: GeberitAd01Data): string {
       ${leftColumn}
     </div>
     <!-- Right column -->
-    <div style="flex:1;overflow:hidden;">
+    <div style="flex:1;min-width:0;">
       ${rightColumn}
     </div>
+  </div>
+
+</div>
+</body>
+</html>`;
+}
+
+// ─── Welcome Card HTML builder ────────────────────────────────────────────────
+
+export function buildWelcomeCardHtml(data: WelcomeCardData): string {
+  const fontFaces = buildFontFace();
+
+  const bg = data.customBackgroundBase64
+    ? { base64: data.customBackgroundBase64, mime: data.customBackgroundMimeType ?? 'image/jpeg' }
+    : (() => {
+        const imgPath = path.join(process.cwd(), 'public', 'images', `${data.backgroundImageId}.jpg`);
+        if (fs.existsSync(imgPath)) {
+          return { base64: fs.readFileSync(imgPath).toString('base64'), mime: 'image/jpeg' };
+        }
+        return { base64: '', mime: 'image/jpeg' };
+      })();
+
+  const logo = resolveLogoBase64();
+
+  const bgSrc   = bg.base64   ? `data:${bg.mime};base64,${bg.base64}`     : '';
+  const logoSrc = logo.base64 ? `data:${logo.mime};base64,${logo.base64}` : '';
+
+  const o = data.gradientOpacity;
+  const gradient = `linear-gradient(to top, rgba(0,70,115,${o}) 0%, rgba(0,70,115,${(o*0.75).toFixed(2)}) 40%, rgba(0,70,115,${(o*0.35).toFixed(2)}) 65%, transparent 85%)`;
+
+  const esc = escapeHtml;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  ${fontFaces}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: ${WC.pageWidth}; height: ${WC.pageHeight}; overflow: hidden; }
+  body { font-family: ${WC.fontFamily}; }
+  @page { size: ${WC.pageWidth} ${WC.pageHeight}; margin: 0; }
+</style>
+</head>
+<body>
+<div style="width:${WC.pageWidth};height:${WC.pageHeight};position:relative;overflow:hidden;">
+
+  <!-- Background -->
+  ${bgSrc ? `<img src="${bgSrc}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;" />` : `<div style="position:absolute;inset:0;background:#004673;"></div>`}
+
+  <!-- Gradient overlay -->
+  <div style="position:absolute;inset:0;background:${gradient};mix-blend-mode:multiply;"></div>
+
+  <!-- Logo -->
+  ${logoSrc ? `<img src="${logoSrc}" alt="GEBERIT" style="position:absolute;top:${WC.logoTop};right:${WC.logoRight};width:${WC.logoWidth};height:auto;" />` : ''}
+
+  <!-- Text content -->
+  <div style="position:absolute;bottom:${WC.contentBottom};left:${WC.contentLeft};max-width:${WC.contentMaxWidth};">
+
+    <div style="font-family:${WC.fontFamily};font-weight:300;font-size:${WC.taglineFontSize};line-height:${WC.taglineLineHeight};color:#ffffff;text-transform:uppercase;">${esc(data.tagline1)}</div>
+    <div style="font-family:${WC.fontFamily};font-weight:300;font-size:${WC.taglineFontSize};line-height:${WC.taglineLineHeight};color:#ffffff;text-transform:uppercase;">${esc(data.tagline2)}</div>
+    <div style="font-family:${WC.fontFamily};font-weight:700;font-size:${WC.taglineFontSize};line-height:${WC.taglineLineHeight};color:${WC.perfectFitBlue};text-transform:uppercase;margin-bottom:${WC.bodyMarginTop};">${esc(data.tagline3)}</div>
+
+    <div style="font-family:${WC.fontFamily};font-weight:400;font-size:${WC.bodySize};line-height:${WC.bodyLineHeight};color:#ffffff;">${esc(data.salutation)}</div>
+    <div style="font-family:${WC.fontFamily};font-weight:400;font-size:${WC.bodySize};line-height:${WC.bodyLineHeight};color:#ffffff;white-space:pre-line;">${esc(data.bodyText)}</div>
+    <div style="font-family:${WC.fontFamily};font-weight:400;font-size:${WC.bodySize};line-height:${WC.bodyLineHeight};color:#ffffff;margin-top:${WC.signoffMarginTop};white-space:pre-line;">${esc(data.signoff)}</div>
+
   </div>
 
 </div>

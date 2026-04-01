@@ -29,22 +29,45 @@ export interface GeberitAd01Data {
   contactText: string;
 
   // Background image selection
-  backgroundImageId: string; // e.g. "Geberit_Ad_01"
+  backgroundImageId: string;
   customBackgroundBase64?: string;
   customBackgroundMimeType?: string;
 }
 
+export interface WelcomeCardData {
+  // Hero taglines (overlaid on photo)
+  tagline1: string;      // e.g. person's name "XXX"
+  tagline2: string;      // "AND GEBERIT"
+  tagline3: string;      // "THE PERFECT FIT" — bold, light blue
+
+  // Body content (overlaid below taglines)
+  salutation: string;    // "Dear XXX,"
+  bodyText: string;      // main paragraph
+  signoff: string;       // "Kind regards,\nYour HR team"
+
+  // Gradient overlay opacity (0–1)
+  gradientOpacity: number;
+
+  // Background image
+  backgroundImageId: string;
+  customBackgroundBase64?: string;
+  customBackgroundMimeType?: string;
+}
+
+export type AnyTemplateData = GeberitAd01Data | WelcomeCardData;
+
 export interface TemplateDefinition {
   id: string;
   label: string;
-  defaultData: GeberitAd01Data;
+  format: string;          // e.g. "A4 Portrait", "JIS B5 Landscape"
+  defaultData: AnyTemplateData;
 }
 
-export const TEMPLATE_VERSION = '1.0';
+export const TEMPLATE_VERSION = '1.1';
 
 export interface ExportedJSON {
   version: string;
   templateId: string;
-  data: GeberitAd01Data;
+  data: AnyTemplateData;
   exportedAt: string;
 }
