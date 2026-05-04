@@ -18,10 +18,9 @@ export const C = {
   heroHeight: '140mm',
 
   // ─── Geberit Logo ─────────────────────────────────────────────────────────
-  // Positioned top-left per visual spec (screenshot reference)
-  // Width: 520 px original → rendered at ~38 mm (height auto: 38 × 79/520 ≈ 5.77 mm)
-  logoTop: '8mm',
-  logoLeft: '10mm',
+  // Positioned top-right per spec: 10 mm from top, 15 mm from right
+  logoTop: '10mm',
+  logoRight: '15mm',
   logoWidth: '38mm',
 
   // ─── Taglines (bottom-left of hero) ──────────────────────────────────────
@@ -79,12 +78,10 @@ export const C = {
 
   // ─── Available background images ─────────────────────────────────────────
   backgroundImages: [
-    'Geberit_Ad_01',
-    'Geberit_Ad_02',
-    'Geberit_Ad_03',
-    'Geberit_Ad_04',
-    'Geberit_Ad_05',
-    'Geberit_Ad_06',
+    'Geberit_Ad_01', 'Geberit_Ad_02', 'Geberit_Ad_03', 'Geberit_Ad_04',
+    'Geberit_Ad_05', 'Geberit_Ad_06', 'Geberit_Ad_07', 'Geberit_Ad_08',
+    'Geberit_Ad_09', 'Geberit_Ad_10', 'Geberit_Ad_11', 'Geberit_Ad_12',
+    'Geberit_Ad_13', 'Geberit_Ad_14', 'Geberit_Ad_15', 'Geberit_Ad_16',
   ] as string[],
 
   defaultBackgroundId: 'Geberit_Ad_01',

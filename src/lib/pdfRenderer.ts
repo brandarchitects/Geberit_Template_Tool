@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { GeberitAd01Data } from '@/types/template';
+import { GeberitAd01Data, WelcomeCardData } from '@/types/template';
 import { C } from '@/components/templates/geberit-ad-01/constants';
+import { WC } from '@/components/templates/geberit-welcome-card/constants';
 
 // ─── Font loading ─────────────────────────────────────────────────────────────
 
@@ -45,41 +46,26 @@ function buildFontFace(): string {
 
 // ─── Image loading ────────────────────────────────────────────────────────────
 
-function resolveBackgroundBase64(data: GeberitAd01Data): { base64: string; mime: string } {
-  if (data.customBackgroundBase64) {
-    return {
-      base64: data.customBackgroundBase64,
-      mime: data.customBackgroundMimeType ?? 'image/jpeg',
-    };
+function resolveImageBase64(backgroundImageId: string, customBase64?: string, customMimeType?: string): { base64: string; mime: string } {
+  if (customBase64) {
+    return { base64: customBase64, mime: customMimeType ?? 'image/jpeg' };
   }
-  const imgPath = path.join(
-    process.cwd(),
-    'public',
-    'images',
-    `${data.backgroundImageId}.jpg`
-  );
+  const imgPath = path.join(process.cwd(), 'public', 'images', `${backgroundImageId}.jpg`);
   if (fs.existsSync(imgPath)) {
-    return {
-      base64: fs.readFileSync(imgPath).toString('base64'),
-      mime: 'image/jpeg',
-    };
+    return { base64: fs.readFileSync(imgPath).toString('base64'), mime: 'image/jpeg' };
   }
   return { base64: '', mime: 'image/jpeg' };
 }
 
 function resolveLogoBase64(): { base64: string; mime: string } {
-  const candidates = [
-    path.join(process.cwd(), 'public', 'images', 'Logo_Geberit_white_transparent.png'),
-  ];
-  for (const p of candidates) {
-    if (fs.existsSync(p)) {
-      return { base64: fs.readFileSync(p).toString('base64'), mime: 'image/png' };
-    }
+  const p = path.join(process.cwd(), 'public', 'images', 'Logo_Geberit_white_transparent.png');
+  if (fs.existsSync(p)) {
+    return { base64: fs.readFileSync(p).toString('base64'), mime: 'image/png' };
   }
   return { base64: '', mime: 'image/png' };
 }
 
-// ─── Section HTML helpers ─────────────────────────────────────────────────────
+// ─── Shared helpers ───────────────────────────────────────────────────────────
 
 function escapeHtml(s: string): string {
   return s
@@ -88,6 +74,8 @@ function escapeHtml(s: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 }
+
+// ─── Ad01 section HTML ────────────────────────────────────────────────────────
 
 function sectionHtml(
   title: string,
@@ -104,9 +92,10 @@ function sectionHtml(
     ? `<div style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:${C.bodyWeight};font-size:${C.bodySize};color:${C.textBlack};line-height:${C.bodyLineHeight};white-space:pre-line;">${escapeHtml(text)}</div>`
     : '';
 
+  const filtered = items ? items.filter((s) => s.trim()) : [];
   const listHtml =
-    items && items.length > 0
-      ? `<ul style="margin:0;padding-left:3.5mm;list-style-type:disc;">${items
+    filtered.length > 0
+      ? `<ul style="margin:0;padding-left:3.5mm;list-style-type:disc;">${filtered
           .map(
             (item) =>
               `<li style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:${C.bulletWeight};font-size:${C.bulletSize};color:${C.textBlack};line-height:${C.bulletLineHeight};margin-bottom:0.3mm;padding-left:0.5mm;">${escapeHtml(item)}</li>`
@@ -117,25 +106,18 @@ function sectionHtml(
   return `<div style="margin-bottom:4mm;">${titleHtml}${bodyHtml}${listHtml}</div>`;
 }
 
-// ─── Main HTML builder ────────────────────────────────────────────────────────
+// ─── Job Ad HTML builder ──────────────────────────────────────────────────────
 
 export function buildPdfHtml(data: GeberitAd01Data): string {
   const fontFaces = buildFontFace();
-  const bg = resolveBackgroundBase64(data);
+  const bg = resolveImageBase64(data.backgroundImageId, data.customBackgroundBase64, data.customBackgroundMimeType);
   const logo = resolveLogoBase64();
 
-  const bgSrc = bg.base64
-    ? `data:${bg.mime};base64,${bg.base64}`
-    : '';
-
-  const logoSrc = logo.base64
-    ? `data:${logo.mime};base64,${logo.base64}`
-    : '';
-
+  const bgSrc = bg.base64 ? `data:${bg.mime};base64,${bg.base64}` : '';
+  const logoSrc = logo.base64 ? `data:${logo.mime};base64,${logo.base64}` : '';
   const gradient = `linear-gradient(to top, rgba(0,70,115,${data.gradientOpacity}) 0%, rgba(0,70,115,${data.gradientOpacity * 0.3}) 45%, transparent 75%)`;
 
   const leftColumn = [
-    // Job intro
     `<div style="margin-bottom:5mm;">
        <div style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:${C.lookingForWeight};font-size:${C.lookingForSize};color:${C.textBlack};line-height:1.3;margin-bottom:1mm;">${escapeHtml(data.lookingForLabel)}</div>
        <div style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:${C.jobTitleWeight};font-size:${C.jobTitleSize};color:${C.textBlack};line-height:1.2;">${escapeHtml(data.jobTitle)}</div>
@@ -157,35 +139,18 @@ export function buildPdfHtml(data: GeberitAd01Data): string {
 <style>
   ${fontFaces}
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body {
-    width: 210mm;
-    height: 297mm;
-    overflow: hidden;
-  }
-  body {
-    font-family: 'AktivGroteskGeberit', Arial, sans-serif;
-    background: #ffffff;
-  }
-  @page {
-    size: A4;
-    margin: 0;
-  }
+  html, body { width: 210mm; height: 297mm; overflow: hidden; }
+  body { font-family: 'AktivGroteskGeberit', Arial, sans-serif; background: #ffffff; }
+  @page { size: A4; margin: 0; }
 </style>
 </head>
 <body>
 <div style="width:210mm;height:297mm;position:relative;background:#ffffff;overflow:hidden;">
 
-  <!-- Hero section -->
   <div style="position:absolute;top:0;left:0;width:210mm;height:${C.heroHeight};overflow:hidden;">
     ${bgSrc ? `<img src="${bgSrc}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;" />` : `<div style="width:100%;height:100%;background:#004673;"></div>`}
-
-    <!-- Gradient overlay -->
     <div style="position:absolute;inset:0;background:${gradient};mix-blend-mode:multiply;"></div>
-
-    <!-- Logo -->
-    ${logoSrc ? `<img src="${logoSrc}" alt="GEBERIT" style="position:absolute;top:${C.logoTop};left:${C.logoLeft};width:${C.logoWidth};height:auto;" />` : ''}
-
-    <!-- Taglines -->
+    ${logoSrc ? `<img src="${logoSrc}" alt="GEBERIT" style="position:absolute;top:${C.logoTop};right:${C.logoRight};width:${C.logoWidth};height:auto;" />` : ''}
     <div style="position:absolute;bottom:${C.taglineBottom};left:${C.taglineLeft};">
       <div style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:300;font-size:${C.taglineFontSize};color:#ffffff;line-height:${C.taglineLineHeight};text-transform:uppercase;">${escapeHtml(data.tagline1)}</div>
       <div style="font-family:'AktivGroteskGeberit',Arial,sans-serif;font-weight:300;font-size:${C.taglineFontSize};color:#ffffff;line-height:${C.taglineLineHeight};text-transform:uppercase;">${escapeHtml(data.tagline2)}</div>
@@ -193,16 +158,58 @@ export function buildPdfHtml(data: GeberitAd01Data): string {
     </div>
   </div>
 
-  <!-- Content section -->
   <div style="position:absolute;top:${C.heroHeight};left:0;right:0;bottom:0;display:flex;padding-top:${C.contentPaddingTop};padding-bottom:${C.contentPaddingBottom};padding-left:${C.contentPaddingLeft};padding-right:${C.contentPaddingRight};gap:${C.columnGap};box-sizing:border-box;">
-    <!-- Left column -->
-    <div style="flex:1;overflow:hidden;">
-      ${leftColumn}
-    </div>
-    <!-- Right column -->
-    <div style="flex:1;overflow:hidden;">
-      ${rightColumn}
-    </div>
+    <div style="flex:1;min-width:0;">${leftColumn}</div>
+    <div style="flex:1;min-width:0;">${rightColumn}</div>
+  </div>
+
+</div>
+</body>
+</html>`;
+}
+
+// ─── Welcome Card HTML builder ────────────────────────────────────────────────
+
+export function buildWelcomeCardPdfHtml(data: WelcomeCardData): string {
+  const fontFaces = buildFontFace();
+  const bg = resolveImageBase64(data.backgroundImageId, data.customBackgroundBase64, data.customBackgroundMimeType);
+  const logo = resolveLogoBase64();
+
+  const bgSrc = bg.base64 ? `data:${bg.mime};base64,${bg.base64}` : '';
+  const logoSrc = logo.base64 ? `data:${logo.mime};base64,${logo.base64}` : '';
+  const gradient = `linear-gradient(to top, rgba(0,70,115,${data.gradientOpacity}) 0%, rgba(0,70,115,${data.gradientOpacity * 0.3}) 45%, transparent 75%)`;
+
+  const f = WC.fontFamily.replace(/'/g, "'");
+  const textBlock = `
+    <div style="font-family:${f};font-weight:300;font-size:${WC.taglineFontSize};color:${WC.white};line-height:${WC.taglineLineHeight};text-transform:uppercase;">${escapeHtml(data.tagline1)}</div>
+    <div style="font-family:${f};font-weight:300;font-size:${WC.taglineFontSize};color:${WC.white};line-height:${WC.taglineLineHeight};text-transform:uppercase;">${escapeHtml(data.tagline2)}</div>
+    <div style="font-family:${f};font-weight:700;font-size:${WC.taglineFontSize};color:${WC.perfectFitBlue};line-height:${WC.taglineLineHeight};text-transform:uppercase;">${escapeHtml(data.tagline3)}</div>
+    <div style="margin-top:${WC.bodyMarginTop};font-family:${f};font-weight:400;font-size:${WC.bodySize};color:${WC.white};line-height:${WC.bodyLineHeight};white-space:pre-line;">${escapeHtml(data.salutation)}</div>
+    <div style="font-family:${f};font-weight:400;font-size:${WC.bodySize};color:${WC.white};line-height:${WC.bodyLineHeight};white-space:pre-line;">${escapeHtml(data.bodyText)}</div>
+    <div style="margin-top:${WC.signoffMarginTop};font-family:${f};font-weight:400;font-size:${WC.bodySize};color:${WC.white};line-height:${WC.bodyLineHeight};white-space:pre-line;">${escapeHtml(data.signoff)}</div>
+  `;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  ${fontFaces}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 257mm; height: 182mm; overflow: hidden; }
+  body { font-family: 'AktivGroteskGeberit', Arial, sans-serif; }
+  @page { size: 257mm 182mm; margin: 0; }
+</style>
+</head>
+<body>
+<div style="width:257mm;height:182mm;position:relative;overflow:hidden;">
+
+  ${bgSrc ? `<img src="${bgSrc}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;" />` : `<div style="position:absolute;inset:0;background:#004673;"></div>`}
+  <div style="position:absolute;inset:0;background:${gradient};mix-blend-mode:multiply;"></div>
+  ${logoSrc ? `<img src="${logoSrc}" alt="GEBERIT" style="position:absolute;top:${WC.logoTop};right:${WC.logoRight};width:${WC.logoWidth};height:auto;" />` : ''}
+
+  <div style="position:absolute;bottom:${WC.contentBottom};left:${WC.contentLeft};max-width:${WC.contentMaxWidth};">
+    ${textBlock}
   </div>
 
 </div>

@@ -29,15 +29,38 @@ export interface GeberitAd01Data {
   contactText: string;
 
   // Background image selection
-  backgroundImageId: string; // e.g. "Geberit_Ad_01"
+  backgroundImageId: string;
   customBackgroundBase64?: string;
   customBackgroundMimeType?: string;
 }
 
+export interface WelcomeCardData {
+  // Hero taglines (large, bottom-left of image)
+  tagline1: string;
+  tagline2: string;
+  tagline3: string; // bold, light-blue
+
+  // Body text block
+  salutation: string;
+  bodyText: string;
+  signoff: string;
+
+  // Gradient overlay opacity (0–1)
+  gradientOpacity: number;
+
+  // Background image selection
+  backgroundImageId: string;
+  customBackgroundBase64?: string;
+  customBackgroundMimeType?: string;
+}
+
+export type AnyTemplateData = GeberitAd01Data | WelcomeCardData;
+
 export interface TemplateDefinition {
   id: string;
   label: string;
-  defaultData: GeberitAd01Data;
+  defaultData: AnyTemplateData;
+  format: 'a4-portrait' | 'b5-landscape';
 }
 
 export const TEMPLATE_VERSION = '1.0';
@@ -45,6 +68,6 @@ export const TEMPLATE_VERSION = '1.0';
 export interface ExportedJSON {
   version: string;
   templateId: string;
-  data: GeberitAd01Data;
+  data: AnyTemplateData;
   exportedAt: string;
 }

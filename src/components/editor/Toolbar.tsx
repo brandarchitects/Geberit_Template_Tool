@@ -1,17 +1,24 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { GeberitAd01Data } from '@/types/template';
-import { ExportedJSON, TEMPLATE_VERSION } from '@/types/template';
+import { useRouter } from 'next/navigation';
+import { AnyTemplateData, ExportedJSON, TEMPLATE_VERSION } from '@/types/template';
 
 interface Props {
-  data: GeberitAd01Data;
+  data: AnyTemplateData;
   templateId: string;
-  onImport: (data: GeberitAd01Data) => void;
+  onTemplateChange: (id: string) => void;
+  onImport: (data: AnyTemplateData) => void;
   onReset: () => void;
 }
 
-export default function Toolbar({ data, templateId, onImport, onReset }: Props) {
+const TEMPLATES = [
+  { id: 'geberit-ad-01', label: 'Job Ad A4' },
+  { id: 'geberit-welcome-card', label: 'Welcome Card' },
+];
+
+export default function Toolbar({ data, templateId, onTemplateChange, onImport, onReset }: Props) {
+  const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +35,7 @@ export default function Toolbar({ data, templateId, onImport, onReset }: Props) 
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `geberit_ad_${Date.now()}.json`;
+    a.download = `geberit_${templateId}_${Date.now()}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -78,7 +85,7 @@ export default function Toolbar({ data, templateId, onImport, onReset }: Props) 
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `geberit_ad_${Date.now()}.pdf`;
+      a.download = `geberit_${templateId}_${Date.now()}.pdf`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -90,17 +97,35 @@ export default function Toolbar({ data, templateId, onImport, onReset }: Props) 
     }
   };
 
+  // ─── Logout ─────────────────────────────────────────────────────────────
+  const handleLogout = async () => {
+    await fetch('/api/auth', { method: 'DELETE' });
+    router.replace('/login');
+  };
+
   return (
     <div className="flex items-center gap-3 px-4 py-3 bg-gray-900 border-b border-gray-800 flex-shrink-0">
       {/* Brand */}
       <div className="flex items-center gap-2 mr-2">
-        <div
-          className="w-2.5 h-2.5 rounded-sm"
-          style={{ backgroundColor: '#004673' }}
-        />
-        <span className="text-white font-semibold text-sm tracking-wide">
-          Geberit Template Tool
-        </span>
+        <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: '#004673' }} />
+        <span className="text-white font-semibold text-sm tracking-wide">Geberit HR Template</span>
+      </div>
+
+      {/* Template tabs */}
+      <div className="flex items-center gap-1 bg-gray-800 rounded-lg p-1">
+        {TEMPLATES.map((t) => (
+          <button
+            key={t.id}
+            onClick={() => onTemplateChange(t.id)}
+            className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
+              templateId === t.id
+                ? 'bg-blue-600 text-white'
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
       </div>
 
       <div className="flex-1" />
@@ -152,6 +177,15 @@ export default function Toolbar({ data, templateId, onImport, onReset }: Props) 
         style={{ backgroundColor: pdfLoading ? '#003a5c' : '#004673' }}
       >
         {pdfLoading ? 'Generating PDF…' : 'Export PDF'}
+      </button>
+
+      {/* Logout */}
+      <button
+        onClick={handleLogout}
+        className="px-3 py-1.5 text-sm text-gray-500 hover:text-red-400 border border-gray-700 hover:border-red-800 rounded transition-colors"
+        title="Logout"
+      >
+        Logout
       </button>
     </div>
   );

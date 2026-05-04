@@ -1,13 +1,12 @@
 'use client';
 
 import React from 'react';
-import { GeberitAd01Data } from '@/types/template';
-import BulletListEditor from './BulletListEditor';
+import { WelcomeCardData } from '@/types/template';
 import ImagePicker from './ImagePicker';
 
 interface Props {
-  data: GeberitAd01Data;
-  onChange: (data: GeberitAd01Data) => void;
+  data: WelcomeCardData;
+  onChange: (data: WelcomeCardData) => void;
 }
 
 function SectionHeader({ children }: { children: React.ReactNode }) {
@@ -70,14 +69,14 @@ function Field({
   );
 }
 
-export default function Sidebar({ data, onChange }: Props) {
-  const set = <K extends keyof GeberitAd01Data>(key: K, value: GeberitAd01Data[K]) =>
+export default function WelcomeCardSidebar({ data, onChange }: Props) {
+  const set = <K extends keyof WelcomeCardData>(key: K, value: WelcomeCardData[K]) =>
     onChange({ ...data, [key]: value });
 
   return (
     <div className="h-full overflow-y-auto" style={{ color: '#e5e7eb' }}>
 
-      {/* Background & Style */}
+      {/* Background */}
       <SectionHeader>Background &amp; Style</SectionHeader>
       <div className="px-4 pt-3 pb-4">
         <ImagePicker
@@ -98,7 +97,7 @@ export default function Sidebar({ data, onChange }: Props) {
         />
       </div>
 
-      {/* Hero Taglines */}
+      {/* Taglines */}
       <SectionHeader>Hero Taglines</SectionHeader>
       <div className="px-4 pt-3 pb-4">
         <Field label="Line 1 — white · light" value={data.tagline1} onChange={(v) => set('tagline1', v)} placeholder="YOUR IDEAS," />
@@ -120,65 +119,28 @@ export default function Sidebar({ data, onChange }: Props) {
         </div>
       </div>
 
-      {/* Job Introduction */}
-      <SectionHeader>Job Introduction</SectionHeader>
+      {/* Body */}
+      <SectionHeader>Message</SectionHeader>
       <div className="px-4 pt-3 pb-4">
-        <Field label="Label — 11 pt · light" value={data.lookingForLabel} onChange={(v) => set('lookingForLabel', v)} placeholder="We are looking for" />
-        <Field label="Job Title — bold" value={data.jobTitle} onChange={(v) => set('jobTitle', v)} placeholder="Job Title / Role" />
-      </div>
-
-      {/* About Geberit */}
-      <SectionHeader>About Geberit</SectionHeader>
-      <div className="px-4 pt-3 pb-4">
-        <Field label="Section title" value={data.aboutTitle} onChange={(v) => set('aboutTitle', v)} />
-        <Field label="Body text" value={data.aboutText} onChange={(v) => set('aboutText', v)} rows={6} placeholder="Company description…" />
-      </div>
-
-      {/* Responsibilities */}
-      <SectionHeader>Main Responsibilities</SectionHeader>
-      <div className="px-4 pt-3 pb-4">
-        <Field label="Section title" value={data.responsibilitiesTitle} onChange={(v) => set('responsibilitiesTitle', v)} />
-        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-1.5">
-          Bullet points — one per line
-        </label>
-        <BulletListEditor
-          items={data.responsibilitiesItems}
-          onChange={(items) => set('responsibilitiesItems', items)}
-          placeholder="Responsibility…"
-        />
-      </div>
-
-      {/* Your Profile */}
-      <SectionHeader>Your Profile</SectionHeader>
-      <div className="px-4 pt-3 pb-4">
-        <Field label="Section title" value={data.profileTitle} onChange={(v) => set('profileTitle', v)} />
-        <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-1.5">
-          Bullet points — one per line
-        </label>
-        <BulletListEditor
-          items={data.profileItems}
-          onChange={(items) => set('profileItems', items)}
-          placeholder="Profile requirement…"
-        />
-      </div>
-
-      {/* Application */}
-      <SectionHeader>Application</SectionHeader>
-      <div className="px-4 pt-3 pb-4">
-        <Field label="Section title" value={data.applicationTitle} onChange={(v) => set('applicationTitle', v)} />
-        <Field label="Body text" value={data.applicationText} onChange={(v) => set('applicationText', v)} rows={3} />
-      </div>
-
-      {/* Contact */}
-      <SectionHeader>Contact</SectionHeader>
-      <div className="px-4 pt-3 pb-4">
-        <Field label="Section title" value={data.contactTitle} onChange={(v) => set('contactTitle', v)} />
         <Field
-          label="Name, address, phone"
-          value={data.contactText}
-          onChange={(v) => set('contactText', v)}
-          rows={3}
-          placeholder={'Geberit International AG\nHR Business Partner\nCH-8645 Jona, +41 55 221 62 60'}
+          label="Salutation"
+          value={data.salutation}
+          onChange={(v) => set('salutation', v)}
+          placeholder="Dear [Name],"
+        />
+        <Field
+          label="Body text"
+          value={data.bodyText}
+          onChange={(v) => set('bodyText', v)}
+          rows={5}
+          placeholder="Welcome message…"
+        />
+        <Field
+          label="Sign-off"
+          value={data.signoff}
+          onChange={(v) => set('signoff', v)}
+          rows={2}
+          placeholder={'Welcome on board!\nThe Geberit HR Team'}
         />
       </div>
 

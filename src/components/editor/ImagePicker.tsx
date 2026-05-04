@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { C } from '@/components/templates/geberit-ad-01/constants';
+import { BACKGROUND_IMAGES } from '@/lib/backgroundImages';
 
 interface Props {
   selectedId: string;
@@ -34,7 +34,6 @@ export default function ImagePicker({
       onCustomUpload(base64, mimeType);
     };
     reader.readAsDataURL(file);
-    // Reset input so same file can be re-selected
     e.target.value = '';
   };
 
@@ -42,40 +41,48 @@ export default function ImagePicker({
 
   return (
     <div className="space-y-3">
-      {/* Predefined images grid */}
-      <div className="grid grid-cols-3 gap-2">
-        {C.backgroundImages.map((id) => (
-          <button
-            key={id}
-            onClick={() => onSelect(id)}
-            className={`relative aspect-[3/2] rounded overflow-hidden border-2 transition-colors ${
-              selectedId === id && !isCustomActive
-                ? 'border-blue-400'
-                : 'border-transparent hover:border-gray-500'
-            }`}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`/images/${id}.jpg`}
-              alt={id}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                // Show placeholder if image not yet uploaded
-                (e.target as HTMLImageElement).style.display = 'none';
-              }}
-            />
-            {/* Fallback placeholder */}
-            <div className="absolute inset-0 bg-gray-700 flex items-center justify-center text-gray-500 text-xs text-center px-1 -z-10">
-              {id.replace('Geberit_Ad_', 'Img ')}
-            </div>
-            {selectedId === id && !isCustomActive && (
-              <div className="absolute inset-0 ring-2 ring-blue-400 ring-inset rounded pointer-events-none" />
-            )}
-          </button>
-        ))}
+      {/* 4-column compact grid */}
+      <div className="grid grid-cols-4 gap-1.5">
+        {BACKGROUND_IMAGES.map((id, idx) => {
+          const isActive = selectedId === id && !isCustomActive;
+          return (
+            <button
+              key={id}
+              onClick={() => onSelect(id)}
+              title={id.replace('Geberit_Ad_', 'Image ')}
+              className={`relative aspect-[3/2] rounded overflow-hidden border-2 transition-colors ${
+                isActive ? 'border-blue-400' : 'border-transparent hover:border-gray-500'
+              }`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`/images/${id}.jpg`}
+                alt={id}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
+              />
+              {/* Number badge fallback */}
+              <div className="absolute inset-0 bg-gray-700 flex items-center justify-center text-gray-500 text-[10px] font-medium -z-10">
+                {idx + 1}
+              </div>
+              {/* Blue checkmark when active */}
+              {isActive && (
+                <div className="absolute inset-0 flex items-center justify-center bg-blue-500/20">
+                  <div className="w-4 h-4 rounded-full bg-blue-400 flex items-center justify-center">
+                    <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+              )}
+            </button>
+          );
+        })}
       </div>
 
-      {/* Custom image upload */}
+      {/* Custom upload */}
       <div>
         <input
           ref={fileInputRef}
@@ -96,7 +103,7 @@ export default function ImagePicker({
         </button>
       </div>
 
-      {/* Gradient opacity slider */}
+      {/* Gradient opacity */}
       <div>
         <label className="block text-xs text-gray-400 mb-1">
           Gradient opacity: <span className="text-white font-medium">{Math.round(gradientOpacity * 100)}%</span>
